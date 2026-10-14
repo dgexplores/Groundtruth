@@ -1,0 +1,310 @@
+{
+  "retriever": "TfidfRetriever",
+  "metric": "recall_at_10",
+  "recall_at_5": 1.0,
+  "recall_at_10": 1.0,
+  "corpus_size": 50,
+  "total_queries": 50,
+  "queries": [
+    {
+      "id": "q00",
+      "query": "What is the capital of France?",
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0
+    },
+    {
+      "id": "q01",
+      "query": "What is 2 + 2?",
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0
+    },
+    {
+      "id": "q02",
+      "query": "What is the programming language that uses GIL?",
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0
+    },
+    {
+      "id": "q03",
+      "query": "What company developed the Hermes Agent?",
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0
+    },
+    {
+      "id": "q04",
+      "query": "In what year was the first version of Python released?",
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0
+    },
+    {
+      "id": "q05",
+      "query": "What does SQL stand for?",
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0
+    },
+    {
+      "id": "q06",
+      "query": "What is the primary function of a regression test?",
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0
+    },
+    {
+      "id": "q07",
+      "query": "Define latency in the context of web requests.",
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0
+    },
+    {
+      "id": "q08",
+      "query": "What is Big O notation used for?",
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0
+    },
+    {
+      "id": "q09",
+      "query": "How does a closure work in JavaScript?",
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0
+    },
+    {
+      "id": "q10",
+      "query": "What are the four pillars of OOP?",
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0
+    },
+    {
+      "id": "q11",
+      "query": "Explain the difference between a process and a thread.",
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0
+    },
+    {
+      "id": "q12",
+      "query": "What is polymorphism?",
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0
+    },
+    {
+      "id": "q13",
+      "query": "Define abstraction.",
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0
+    },
+    {
+      "id": "q14",
+      "query": "What is a REST API?",
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0
+    },
+    {
+      "id": "q15",
+      "query": "What is GraphQL?",
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0
+    },
+    {
+      "id": "q16",
+      "query": "How does garbage collection work?",
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0
+    },
+    {
+      "id": "q17",
+      "query": "Define recursion.",
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0
+    },
+    {
+      "id": "q18",
+      "query": "What is the purpose of hashing?",
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0
+    },
+    {
+      "id": "q19",
+      "query": "Explain deadlock.",
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0
+    },
+    {
+      "id": "q20",
+      "query": "What is dependency injection?",
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0
+    },
+    {
+      "id": "q21",
+      "query": "Define continuous integration.",
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0
+    },
+    {
+      "id": "q22",
+      "query": "What is unit testing?",
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0
+    },
+    {
+      "id": "q23",
+      "query": "What is an asynchronous function in Python?",
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0
+    },
+    {
+      "id": "q24",
+      "query": "What is memory leakage?",
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0
+    },
+    {
+      "id": "q25",
+      "query": "Define blockchain.",
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0
+    },
+    {
+      "id": "q26",
+      "query": "What is a microservice architecture?",
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0
+    },
+    {
+      "id": "q27",
+      "query": "What is cloud computing?",
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0
+    },
+    {
+      "id": "q28",
+      "query": "Explain containerization.",
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0
+    },
+    {
+      "id": "q29",
+      "query": "What is artificial intelligence?",
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0
+    },
+    {
+      "id": "q30",
+      "query": "Define machine learning.",
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0
+    },
+    {
+      "id": "q31",
+      "query": "What is natural language processing?",
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0
+    },
+    {
+      "id": "q32",
+      "query": "What is an IDE?",
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0
+    },
+    {
+      "id": "q33",
+      "query": "What is version control?",
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0
+    },
+    {
+      "id": "q34",
+      "query": "Explain the role of a compiler.",
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0
+    },
+    {
+      "id": "q35",
+      "query": "What is a database?",
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0
+    },
+    {
+      "id": "q36",
+      "query": "What is SQL?",
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0
+    },
+    {
+      "id": "q37",
+      "query": "What is NoSQL?",
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0
+    },
+    {
+      "id": "q38",
+      "query": "Define a pointer.",
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0
+    },
+    {
+      "id": "q39",
+      "query": "What is an algorithm?",
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0
+    },
+    {
+      "id": "q40",
+      "query": "What is object-oriented programming?",
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0
+    },
+    {
+      "id": "q41",
+      "query": "What is functional programming?",
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0
+    },
+    {
+      "id": "q42",
+      "query": "Explain the purpose of a firewall.",
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0
+    },
+    {
+      "id": "q43",
+      "query": "What is encryption?",
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0
+    },
+    {
+      "id": "q44",
+      "query": "What is a cookie?",
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0
+    },
+    {
+      "id": "q45",
+      "query": "What is a session?",
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0
+    },
+    {
+      "id": "q46",
+      "query": "Explain DNS.",
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0
+    },
+    {
+      "id": "q47",
+      "query": "What is HTTPS?",
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0
+    },
+    {
+      "id": "q48",
+      "query": "What is JSON?",
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0
+    },
+    {
+      "id": "q49",
+      "query": "What is XML?",
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0
+    }
+  ]
+}

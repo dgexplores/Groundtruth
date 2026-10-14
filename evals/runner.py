@@ -1,10 +1,13 @@
-"""Evaluate the golden dataset and emit a machine-readable report.
+"""Evaluate against the golden set and emit a machine-readable report.
 
-The report is the input contract for ``evals.regression_gate``. It deliberately
-reports ``exact_match`` rather than ``recall``: this harness scores a model's
-answer text, not a retrieval result set, so the two metrics must not be
-conflated. See ``evaluate_retrieval`` in ``src.evaluator`` for the real
-Recall@K, which this runner does not yet exercise.
+Two modes:
+  retrieval (default) runs the Recall@K benchmark over evals/corpus.json
+  qa scores exact-match answers against evals/golden_dataset.json
+
+Reports are the input contract for ``evals.regression_gate``. The qa
+mode reports ``exact_match``; the retrieval mode reports
+``recall_at_5`` and ``recall_at_10``. The two must not be conflated:
+exact_match scores an answer string, recall scores a retrieved set.
 """
 
 import argparse
@@ -12,7 +15,8 @@ import json
 from pathlib import Path
 from typing import Any, Callable, Dict, List
 
-REPO_ROOT = Path(__file__).resolve().parent.parent
+from evals.benchmark import DEFAULT_CORPUS, load_corpus, run_benchmark
+
 DEFAULT_DATASET = Path(__file__).resolve().parent / "golden_dataset.json"
 DEFAULT_REPORT_DIR = Path(__file__).resolve().parent / "reports"
 
@@ -30,8 +34,9 @@ def load_data(path: Path) -> List[Dict[str, Any]]:
 def simulate_llm(input_text: str) -> str:
     """Deterministic stand-in for a model call.
 
-    This is a fixed lookup, not a model. Any metric derived from it measures
-    the lookup table, so reports always carry ``model: stub:not-a-real-model``.
+    This is a fixed lookup, not a model. Any metric derived from it
+    measures the lookup table, so reports always carry
+    ``model: stub:not-a-real-model``.
     """
     if "capital of France" in input_text:
         return "Paris"
@@ -68,7 +73,7 @@ def run_evaluation(
 
 
 def build_report(results: List[Dict[str, Any]]) -> Dict[str, Any]:
-    """Summarise per-item results into the gate's input contract."""
+    """Summarise per-item QA results into the gate's input contract."""
     total = len(results)
     matched = sum(1 for r in results if r["match"])
     return {
@@ -83,22 +88,41 @@ def build_report(results: List[Dict[str, Any]]) -> Dict[str, Any]:
 
 def main(argv: List[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--mode",
+        choices=("retrieval", "qa"),
+        default="retrieval",
+        help="retrieval: Recall@K benchmark (default); qa: exact-match scoring",
+    )
     parser.add_argument("--dataset", type=Path, default=DEFAULT_DATASET)
+    parser.add_argument("--corpus", type=Path, default=DEFAULT_CORPUS)
     parser.add_argument("--out", type=Path, default=DEFAULT_REPORT_DIR / "latest.json")
     args = parser.parse_args(argv)
 
-    if not args.dataset.exists():
-        parser.error(f"dataset not found: {args.dataset}")
+    if args.mode == "retrieval":
+        if not args.corpus.exists():
+            parser.error(f"corpus not found: {args.corpus}")
+        report = run_benchmark(load_corpus(args.corpus))
+    else:
+        if not args.dataset.exists():
+            parser.error(f"dataset not found: {args.dataset}")
+        report = build_report(run_evaluation(load_data(args.dataset)))
 
-    report = build_report(run_evaluation(load_data(args.dataset)))
     args.out.parent.mkdir(parents=True, exist_ok=True)
     with open(args.out, "w", encoding="utf-8") as handle:
         json.dump(report, handle, indent=2)
 
-    print(f"model:    {report['model']}")
-    print(f"dataset:  {args.dataset}")
-    print(f"exact_match: {report['exact_match']:.4f} ({report['matched']}/{report['total']})")
-    print(f"report:   {args.out}")
+    if args.mode == "retrieval":
+        print(f"retriever: {report['retriever']}")
+        for k in (5, 10):
+            print(f"recall@{k}:  {report[f'recall_at_{k}']:.4f}")
+    else:
+        print(f"model:       {report['model']}")
+        print(
+            f"exact_match: {report['exact_match']:.4f} "
+            f"({report['matched']}/{report['total']})"
+        )
+    print(f"report:      {args.out}")
     return 0
 
 

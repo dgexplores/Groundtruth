@@ -101,3 +101,37 @@ def test_end_to_end_report_satisfies_the_gate_contract():
     passed, _ = evaluate(report, report)
 
     assert passed is True
+
+
+def test_main_retrieval_mode_is_the_default(tmp_path):
+    out = tmp_path / "r.json"
+
+    assert runner_module.main(["--out", str(out)]) == 0
+    report = json.loads(out.read_text())
+    assert "recall_at_10" in report
+    assert "recall_at_5" in report
+
+
+def test_main_retrieval_mode_report_feeds_the_gate(tmp_path):
+    from evals.regression_gate import evaluate
+
+    out = tmp_path / "r.json"
+    runner_module.main(["--out", str(out)])
+
+    report = json.loads(out.read_text())
+    passed, _ = evaluate(report, report, metric="recall_at_10")
+    assert passed is True
+
+
+def test_main_qa_mode_still_writes_exact_match(tmp_path):
+    out = tmp_path / "r.json"
+
+    assert runner_module.main(["--mode", "qa", "--out", str(out)]) == 0
+    report = json.loads(out.read_text())
+    assert report["metric"] == "exact_match"
+    assert 0.0 <= report["exact_match"] <= 1.0
+
+
+def test_main_rejects_unknown_mode(tmp_path):
+    with pytest.raises(SystemExit):
+        runner_module.main(["--mode", "neither", "--out", str(tmp_path / "x.json")])
