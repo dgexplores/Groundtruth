@@ -135,3 +135,53 @@ def test_main_qa_mode_still_writes_exact_match(tmp_path):
 def test_main_rejects_unknown_mode(tmp_path):
     with pytest.raises(SystemExit):
         runner_module.main(["--mode", "neither", "--out", str(tmp_path / "x.json")])
+
+
+def test_main_retrieval_report_has_matrix_cells(tmp_path):
+    out = tmp_path / "r.json"
+
+    runner_module.main(["--out", str(out)])
+    report = json.loads(out.read_text())
+
+    assert report["headline_retriever"] == "dense"
+    assert report["headline_tier"] == "semantic"
+    for alias in ("tfidf", "dense"):
+        for tier in ("lexical", "semantic"):
+            assert f"{alias}_{tier}_recall_at_10" in report
+
+
+def test_main_retrievers_flag_selects_cells(tmp_path):
+    out = tmp_path / "r.json"
+
+    assert (
+        runner_module.main(
+            ["--out", str(out), "--retrievers", "tfidf", "--headline", "tfidf:lexical"]
+        )
+        == 0
+    )
+    report = json.loads(out.read_text())
+
+    assert set(report["retrievers"]) == {"tfidf"}
+    assert "tfidf_semantic_recall_at_10" in report
+    assert "dense_lexical_recall_at_10" not in report
+
+
+def test_main_rejects_unknown_retriever(tmp_path):
+    with pytest.raises(SystemExit):
+        runner_module.main(
+            ["--out", str(tmp_path / "x.json"), "--retrievers", "tfidf,bm25"]
+        )
+
+
+def test_main_rejects_malformed_headline(tmp_path):
+    with pytest.raises(SystemExit):
+        runner_module.main(["--out", str(tmp_path / "x.json"), "--headline", "dense"])
+
+
+def test_main_rejects_headline_missing_from_matrix(tmp_path):
+    out = tmp_path / "r.json"
+
+    with pytest.raises(ValueError, match="not in matrix"):
+        runner_module.main(
+            ["--out", str(out), "--retrievers", "tfidf", "--headline", "dense:semantic"]
+        )

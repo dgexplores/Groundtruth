@@ -15,7 +15,16 @@ jobs:
           python-version: "3.12"
 
       - name: Install dependencies
-        run: pip install "pytest>=8,<9" "numpy>=1.26" "scikit-learn>=1.4,<2"
+        run: |
+          pip install "pytest>=8,<9" "numpy>=1.26" "scikit-learn>=1.4,<2"
+          pip install torch --index-url https://download.pytorch.org/whl/cpu
+          pip install "sentence-transformers>=6,<7"
+
+      - name: Cache sentence-transformers model
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: hf-${{ runner.os }}-all-MiniLM-L6-v2
 
       - name: Run tests
         run: python -m pytest tests/ -q
@@ -23,5 +32,8 @@ jobs:
       - name: Retrieval benchmark
         run: python -m evals.runner
 
-      - name: Regression gate
+      - name: Regression gate (headline: dense/semantic)
         run: python -m evals.regression_gate evals/baseline_report.json evals/reports/latest.json --metric recall_at_10
+
+      - name: Regression gate (tfidf semantic)
+        run: python -m evals.regression_gate evals/baseline_report.json evals/reports/latest.json --metric tfidf_semantic_recall_at_10

@@ -8,6 +8,7 @@ from evals.benchmark import (
     K_VALUES,
     load_corpus,
     run_benchmark,
+    run_matrix,
 )
 from evals.regression_gate import evaluate
 from src.retriever import Hit
@@ -101,11 +102,15 @@ def test_bundled_corpus_is_well_formed():
 
     doc_ids = {doc["id"] for doc in corpus["documents"]}
     assert len(corpus["documents"]) == 50
-    assert len(corpus["queries"]) == 50
+    assert len(corpus["queries"]) == 100
+    tiers = {}
     for query in corpus["queries"]:
         assert query["relevant_ids"], f"{query['id']} has no relevant docs"
         for doc_id in query["relevant_ids"]:
             assert doc_id in doc_ids, f"{query['id']} points at missing {doc_id}"
+        tiers.setdefault(query.get("tier", "lexical"), 0)
+        tiers[query["tier"]] += 1
+    assert tiers == {"lexical": 50, "semantic": 50}
 
 
 def test_load_corpus_rejects_missing_keys(tmp_path: Path):
@@ -130,3 +135,82 @@ def test_load_corpus_rejects_query_without_relevance(tmp_path: Path):
 
     with pytest.raises(ValueError, match="relevant_ids"):
         load_corpus(bad)
+
+
+def test_load_corpus_rejects_empty_tier(tmp_path: Path):
+    bad = tmp_path / "bad.json"
+    bad.write_text(json.dumps({
+        "documents": [{"id": "d", "text": "t"}],
+        "queries": [{"text": "q", "relevant_ids": ["d"], "tier": ""}],
+    }))
+
+    with pytest.raises(ValueError, match="tier"):
+        load_corpus(bad)
+
+
+TIERED_CORPUS = {
+    "documents": [
+        {"id": "d0", "text": "alpha document about apples"},
+        {"id": "d1", "text": "beta document about bananas"},
+    ],
+    "queries": [
+        {"id": "q0", "text": "alpha", "relevant_ids": ["d0"], "tier": "lexical"},
+        {"id": "s0", "text": "green fruit", "relevant_ids": ["d1"], "tier": "semantic"},
+    ],
+}
+
+
+def test_run_matrix_one_cell_per_retriever_and_tier():
+    report = run_matrix(TIERED_CORPUS, retrievers={"tfidf": AlwaysRelevantRetriever})
+
+    assert set(report["cells"]) == {"tfidf"}
+    assert set(report["cells"]["tfidf"]) == {"lexical", "semantic"}
+    assert report["cells"]["tfidf"]["lexical"]["total_queries"] == 1
+    assert report["cells"]["tfidf"]["semantic"]["total_queries"] == 1
+
+
+def test_run_matrix_headline_metrics_sit_at_top_level():
+    report = run_matrix(
+        TIERED_CORPUS,
+        retrievers={"tfidf": AlwaysRelevantRetriever},
+        headline=("tfidf", "semantic"),
+    )
+
+    assert report["headline_retriever"] == "tfidf"
+    assert report["headline_tier"] == "semantic"
+    for k in K_VALUES:
+        assert report[f"recall_at_{k}"] == report[f"tfidf_semantic_recall_at_{k}"]
+    assert report["metric"] == "recall_at_10"
+    passed, _ = evaluate(report, report, metric="recall_at_10")
+    assert passed is True
+
+
+def test_run_matrix_missing_headline_cell_rejected():
+    with pytest.raises(ValueError, match="not in matrix"):
+        run_matrix(
+            TIERED_CORPUS,
+            retrievers={"tfidf": AlwaysRelevantRetriever},
+            headline=("dense", "semantic"),
+        )
+
+
+def test_run_matrix_needs_at_least_one_retriever():
+    with pytest.raises(ValueError, match="at least one retriever"):
+        run_matrix(TIERED_CORPUS, retrievers={})
+
+
+def test_run_matrix_needs_at_least_one_query():
+    with pytest.raises(ValueError, match="at least one query"):
+        run_matrix(
+            {"documents": [{"id": "d", "text": "t"}], "queries": []},
+            retrievers={"tfidf": AlwaysRelevantRetriever},
+        )
+
+
+def test_run_matrix_flat_keys_for_every_cell():
+    report = run_matrix(TIERED_CORPUS, retrievers={"tfidf": AlwaysRelevantRetriever})
+
+    for tier in ("lexical", "semantic"):
+        for k in K_VALUES:
+            key = f"tfidf_{tier}_recall_at_{k}"
+            assert isinstance(report[key], float), key

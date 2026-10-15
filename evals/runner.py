@@ -1,24 +1,34 @@
 """Evaluate against the golden set and emit a machine-readable report.
 
 Two modes:
-  retrieval (default) runs the Recall@K benchmark over evals/corpus.json
+  retrieval (default) runs the Recall@K benchmark over evals/corpus.json,
+    one cell per retriever (--retrievers) and query tier, with the
+    headline cell also reported as top-level recall_at_5 / recall_at_10
   qa scores exact-match answers against evals/golden_dataset.json
 
 Reports are the input contract for ``evals.regression_gate``. The qa
 mode reports ``exact_match``; the retrieval mode reports
-``recall_at_5`` and ``recall_at_10``. The two must not be conflated:
-exact_match scores an answer string, recall scores a retrieved set.
+``recall_at_5`` and ``recall_at_10`` (headline cell). The two must not
+be conflated: exact_match scores an answer string, recall scores a
+retrieved set.
 """
 
 import argparse
 import json
 from pathlib import Path
-from typing import Any, Callable, Dict, List
+from typing import Any, Callable, Dict, List, Tuple
 
-from evals.benchmark import DEFAULT_CORPUS, load_corpus, run_benchmark
+from evals.benchmark import (
+    DEFAULT_CORPUS,
+    DEFAULT_RETRIEVERS,
+    load_corpus,
+    run_matrix,
+)
 
 DEFAULT_DATASET = Path(__file__).resolve().parent / "golden_dataset.json"
 DEFAULT_REPORT_DIR = Path(__file__).resolve().parent / "reports"
+DEFAULT_RETRIEVER_NAMES = "tfidf,dense"
+DEFAULT_HEADLINE_CELL = "dense:semantic"
 
 STUB_MODEL_ID = "stub:not-a-real-model"
 
@@ -97,12 +107,40 @@ def main(argv: List[str] | None = None) -> int:
     parser.add_argument("--dataset", type=Path, default=DEFAULT_DATASET)
     parser.add_argument("--corpus", type=Path, default=DEFAULT_CORPUS)
     parser.add_argument("--out", type=Path, default=DEFAULT_REPORT_DIR / "latest.json")
+    parser.add_argument(
+        "--retrievers",
+        default=DEFAULT_RETRIEVER_NAMES,
+        help="comma-separated retriever aliases to run (default: %(default)s)",
+    )
+    parser.add_argument(
+        "--headline",
+        default=DEFAULT_HEADLINE_CELL,
+        help="retriever:tier cell reported as top-level recall_at_k "
+        "(default: %(default)s)",
+    )
     args = parser.parse_args(argv)
 
     if args.mode == "retrieval":
         if not args.corpus.exists():
             parser.error(f"corpus not found: {args.corpus}")
-        report = run_benchmark(load_corpus(args.corpus))
+        aliases = [alias.strip() for alias in args.retrievers.split(",") if alias.strip()]
+        unknown = [alias for alias in aliases if alias not in DEFAULT_RETRIEVERS]
+        if unknown:
+            parser.error(
+                f"unknown retriever(s): {unknown}; "
+                f"known: {sorted(DEFAULT_RETRIEVERS)}"
+            )
+        headline: Tuple[str, str] | None = None
+        if args.headline:
+            parts = args.headline.split(":", 1)
+            if len(parts) != 2 or not all(parts):
+                parser.error(f"headline must be 'retriever:tier', got {args.headline!r}")
+            headline = (parts[0], parts[1])
+        report = run_matrix(
+            load_corpus(args.corpus),
+            retrievers={alias: DEFAULT_RETRIEVERS[alias] for alias in aliases},
+            headline=headline,
+        )
     else:
         if not args.dataset.exists():
             parser.error(f"dataset not found: {args.dataset}")
@@ -113,9 +151,14 @@ def main(argv: List[str] | None = None) -> int:
         json.dump(report, handle, indent=2)
 
     if args.mode == "retrieval":
-        print(f"retriever: {report['retriever']}")
+        print(f"headline:    {report['headline_retriever']}:{report['headline_tier']}")
         for k in (5, 10):
             print(f"recall@{k}:  {report[f'recall_at_{k}']:.4f}")
+        for alias in report["retrievers"]:
+            for tier in sorted(report["cells"][alias]):
+                for k in (5, 10):
+                    value = report[f"{alias}_{tier}_recall_at_{k}"]
+                    print(f"{alias}/{tier} recall@{k}: {value:.4f}")
     else:
         print(f"model:       {report['model']}")
         print(

@@ -1,310 +1,1569 @@
 {
-  "retriever": "TfidfRetriever",
   "metric": "recall_at_10",
-  "recall_at_5": 1.0,
-  "recall_at_10": 1.0,
+  "retrievers": {
+    "tfidf": "TfidfRetriever",
+    "dense": "DenseRetriever"
+  },
+  "headline_retriever": "dense",
+  "headline_tier": "semantic",
   "corpus_size": 50,
-  "total_queries": 50,
+  "total_queries": 100,
+  "cells": {
+    "tfidf": {
+      "lexical": {
+        "retriever": "TfidfRetriever",
+        "metric": "recall_at_10",
+        "recall_at_5": 1.0,
+        "recall_at_10": 1.0,
+        "corpus_size": 50,
+        "total_queries": 50,
+        "queries": [
+          {
+            "id": "q00",
+            "query": "What is the capital of France?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q01",
+            "query": "What is 2 + 2?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q02",
+            "query": "What is the programming language that uses GIL?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q03",
+            "query": "What company developed the Hermes Agent?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q04",
+            "query": "In what year was the first version of Python released?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q05",
+            "query": "What does SQL stand for?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q06",
+            "query": "What is the primary function of a regression test?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q07",
+            "query": "Define latency in the context of web requests.",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q08",
+            "query": "What is Big O notation used for?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q09",
+            "query": "How does a closure work in JavaScript?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q10",
+            "query": "What are the four pillars of OOP?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q11",
+            "query": "Explain the difference between a process and a thread.",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q12",
+            "query": "What is polymorphism?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q13",
+            "query": "Define abstraction.",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q14",
+            "query": "What is a REST API?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q15",
+            "query": "What is GraphQL?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q16",
+            "query": "How does garbage collection work?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q17",
+            "query": "Define recursion.",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q18",
+            "query": "What is the purpose of hashing?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q19",
+            "query": "Explain deadlock.",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q20",
+            "query": "What is dependency injection?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q21",
+            "query": "Define continuous integration.",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q22",
+            "query": "What is unit testing?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q23",
+            "query": "What is an asynchronous function in Python?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q24",
+            "query": "What is memory leakage?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q25",
+            "query": "Define blockchain.",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q26",
+            "query": "What is a microservice architecture?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q27",
+            "query": "What is cloud computing?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q28",
+            "query": "Explain containerization.",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q29",
+            "query": "What is artificial intelligence?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q30",
+            "query": "Define machine learning.",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q31",
+            "query": "What is natural language processing?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q32",
+            "query": "What is an IDE?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q33",
+            "query": "What is version control?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q34",
+            "query": "Explain the role of a compiler.",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q35",
+            "query": "What is a database?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q36",
+            "query": "What is SQL?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q37",
+            "query": "What is NoSQL?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q38",
+            "query": "Define a pointer.",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q39",
+            "query": "What is an algorithm?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q40",
+            "query": "What is object-oriented programming?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q41",
+            "query": "What is functional programming?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q42",
+            "query": "Explain the purpose of a firewall.",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q43",
+            "query": "What is encryption?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q44",
+            "query": "What is a cookie?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q45",
+            "query": "What is a session?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q46",
+            "query": "Explain DNS.",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q47",
+            "query": "What is HTTPS?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q48",
+            "query": "What is JSON?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q49",
+            "query": "What is XML?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          }
+        ]
+      },
+      "semantic": {
+        "retriever": "TfidfRetriever",
+        "metric": "recall_at_10",
+        "recall_at_5": 0.7,
+        "recall_at_10": 0.7,
+        "corpus_size": 50,
+        "total_queries": 50,
+        "queries": [
+          {
+            "id": "s00",
+            "query": "Which French city is home to the country's government?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s01",
+            "query": "How much do you get when you add two and two?",
+            "recall_at_5": 0.0,
+            "recall_at_10": 0.0
+          },
+          {
+            "id": "s02",
+            "query": "Which well-known concurrency bottleneck does Python's interpreter impose?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s03",
+            "query": "Which organization is behind the Hermes Agent?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s04",
+            "query": "When did Python's initial release happen?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s05",
+            "query": "What is the full form of SQL?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s06",
+            "query": "Why do teams re-run their old test suite after changing code?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s07",
+            "query": "How long does a web round-trip take?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s08",
+            "query": "How do computer scientists express how a routine scales?",
+            "recall_at_5": 0.0,
+            "recall_at_10": 0.0
+          },
+          {
+            "id": "s09",
+            "query": "Why does an inner function remember the variables around it?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s10",
+            "query": "Name the four core principles taught in OOP courses.",
+            "recall_at_5": 0.0,
+            "recall_at_10": 0.0
+          },
+          {
+            "id": "s11",
+            "query": "What separates a thread from a full process?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s12",
+            "query": "Why can different subclasses handle the same message differently?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s13",
+            "query": "What does an object hide to keep its internals out of sight?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s14",
+            "query": "What architectural approach standardises communication between systems on the web?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s15",
+            "query": "What kind of query interface does GraphQL give API consumers?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s16",
+            "query": "Which housekeeping mechanism reclaims unused RAM?",
+            "recall_at_5": 0.0,
+            "recall_at_10": 0.0
+          },
+          {
+            "id": "s17",
+            "query": "What do programmers call a function that calls itself?",
+            "recall_at_5": 0.0,
+            "recall_at_10": 0.0
+          },
+          {
+            "id": "s18",
+            "query": "Why do systems convert inputs into fixed-length keys?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s19",
+            "query": "What happens when processes get stuck waiting on each other?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s20",
+            "query": "What's the name for letting outside objects be supplied instead of built on the spot?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s21",
+            "query": "How often should a team push their work into a shared branch?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s22",
+            "query": "What do you call testing the tiniest pieces of an app by themselves?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s23",
+            "query": "How do you write a Python routine that can pause and pick up later?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s24",
+            "query": "What's it called when forgotten objects keep eating RAM?",
+            "recall_at_5": 0.0,
+            "recall_at_10": 0.0
+          },
+          {
+            "id": "s25",
+            "query": "Which shared record book keeps a tamper-proof history of deals?",
+            "recall_at_5": 0.0,
+            "recall_at_10": 0.0
+          },
+          {
+            "id": "s26",
+            "query": "What do you call an app split into many small independently deployed services?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s27",
+            "query": "How do companies rent computing power over the network and pay per use?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s28",
+            "query": "Why does bundling everything into one image make software run anywhere?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s29",
+            "query": "Can machines be taught to imitate how people think?",
+            "recall_at_5": 0.0,
+            "recall_at_10": 0.0
+          },
+          {
+            "id": "s30",
+            "query": "What branch of AI learns by finding patterns in examples?",
+            "recall_at_5": 0.0,
+            "recall_at_10": 0.0
+          },
+          {
+            "id": "s31",
+            "query": "What lets computers read and make sense of everyday speech?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s32",
+            "query": "What all-in-one tool do developers open to write and debug programs?",
+            "recall_at_5": 0.0,
+            "recall_at_10": 0.0
+          },
+          {
+            "id": "s33",
+            "query": "How can you retrieve an older copy of a file after editing it?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s34",
+            "query": "What turns human-readable source into instructions the CPU runs?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s35",
+            "query": "What's the name for a structured collection of records kept on a machine?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s36",
+            "query": "Which language handles tables in a relational store?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s37",
+            "query": "How is a non-relational store different from classic tables?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s38",
+            "query": "When a variable stores the whereabouts of another, what is it called?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s39",
+            "query": "What's the standard recipe for solving a task step by step?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s40",
+            "query": "Which paradigm groups behavior together with the data it acts on?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s41",
+            "query": "Which style of coding treats everything as transformations of values?",
+            "recall_at_5": 0.0,
+            "recall_at_10": 0.0
+          },
+          {
+            "id": "s42",
+            "query": "What guards a network by deciding which traffic gets through?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s43",
+            "query": "How do you scramble a message so only the intended reader can open it?",
+            "recall_at_5": 0.0,
+            "recall_at_10": 0.0
+          },
+          {
+            "id": "s44",
+            "query": "What tiny text file does a site drop in your browser to remember you?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s45",
+            "query": "How does a website remember who you are across multiple page loads?",
+            "recall_at_5": 0.0,
+            "recall_at_10": 0.0
+          },
+          {
+            "id": "s46",
+            "query": "What maps names people type to where things live online?",
+            "recall_at_5": 0.0,
+            "recall_at_10": 0.0
+          },
+          {
+            "id": "s47",
+            "query": "Which protocol variant stops eavesdroppers on the web?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s48",
+            "query": "What lightweight text format do apps use to swap structured data?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s49",
+            "query": "Which tag-based scheme wraps content so both people and machines can parse it?",
+            "recall_at_5": 0.0,
+            "recall_at_10": 0.0
+          }
+        ]
+      }
+    },
+    "dense": {
+      "lexical": {
+        "retriever": "DenseRetriever",
+        "metric": "recall_at_10",
+        "recall_at_5": 1.0,
+        "recall_at_10": 1.0,
+        "corpus_size": 50,
+        "total_queries": 50,
+        "queries": [
+          {
+            "id": "q00",
+            "query": "What is the capital of France?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q01",
+            "query": "What is 2 + 2?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q02",
+            "query": "What is the programming language that uses GIL?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q03",
+            "query": "What company developed the Hermes Agent?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q04",
+            "query": "In what year was the first version of Python released?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q05",
+            "query": "What does SQL stand for?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q06",
+            "query": "What is the primary function of a regression test?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q07",
+            "query": "Define latency in the context of web requests.",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q08",
+            "query": "What is Big O notation used for?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q09",
+            "query": "How does a closure work in JavaScript?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q10",
+            "query": "What are the four pillars of OOP?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q11",
+            "query": "Explain the difference between a process and a thread.",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q12",
+            "query": "What is polymorphism?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q13",
+            "query": "Define abstraction.",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q14",
+            "query": "What is a REST API?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q15",
+            "query": "What is GraphQL?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q16",
+            "query": "How does garbage collection work?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q17",
+            "query": "Define recursion.",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q18",
+            "query": "What is the purpose of hashing?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q19",
+            "query": "Explain deadlock.",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q20",
+            "query": "What is dependency injection?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q21",
+            "query": "Define continuous integration.",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q22",
+            "query": "What is unit testing?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q23",
+            "query": "What is an asynchronous function in Python?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q24",
+            "query": "What is memory leakage?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q25",
+            "query": "Define blockchain.",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q26",
+            "query": "What is a microservice architecture?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q27",
+            "query": "What is cloud computing?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q28",
+            "query": "Explain containerization.",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q29",
+            "query": "What is artificial intelligence?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q30",
+            "query": "Define machine learning.",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q31",
+            "query": "What is natural language processing?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q32",
+            "query": "What is an IDE?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q33",
+            "query": "What is version control?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q34",
+            "query": "Explain the role of a compiler.",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q35",
+            "query": "What is a database?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q36",
+            "query": "What is SQL?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q37",
+            "query": "What is NoSQL?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q38",
+            "query": "Define a pointer.",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q39",
+            "query": "What is an algorithm?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q40",
+            "query": "What is object-oriented programming?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q41",
+            "query": "What is functional programming?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q42",
+            "query": "Explain the purpose of a firewall.",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q43",
+            "query": "What is encryption?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q44",
+            "query": "What is a cookie?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q45",
+            "query": "What is a session?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q46",
+            "query": "Explain DNS.",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q47",
+            "query": "What is HTTPS?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q48",
+            "query": "What is JSON?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "q49",
+            "query": "What is XML?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          }
+        ]
+      },
+      "semantic": {
+        "retriever": "DenseRetriever",
+        "metric": "recall_at_10",
+        "recall_at_5": 0.98,
+        "recall_at_10": 1.0,
+        "corpus_size": 50,
+        "total_queries": 50,
+        "queries": [
+          {
+            "id": "s00",
+            "query": "Which French city is home to the country's government?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s01",
+            "query": "How much do you get when you add two and two?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s02",
+            "query": "Which well-known concurrency bottleneck does Python's interpreter impose?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s03",
+            "query": "Which organization is behind the Hermes Agent?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s04",
+            "query": "When did Python's initial release happen?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s05",
+            "query": "What is the full form of SQL?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s06",
+            "query": "Why do teams re-run their old test suite after changing code?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s07",
+            "query": "How long does a web round-trip take?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s08",
+            "query": "How do computer scientists express how a routine scales?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s09",
+            "query": "Why does an inner function remember the variables around it?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s10",
+            "query": "Name the four core principles taught in OOP courses.",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s11",
+            "query": "What separates a thread from a full process?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s12",
+            "query": "Why can different subclasses handle the same message differently?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s13",
+            "query": "What does an object hide to keep its internals out of sight?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s14",
+            "query": "What architectural approach standardises communication between systems on the web?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s15",
+            "query": "What kind of query interface does GraphQL give API consumers?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s16",
+            "query": "Which housekeeping mechanism reclaims unused RAM?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s17",
+            "query": "What do programmers call a function that calls itself?",
+            "recall_at_5": 0.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s18",
+            "query": "Why do systems convert inputs into fixed-length keys?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s19",
+            "query": "What happens when processes get stuck waiting on each other?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s20",
+            "query": "What's the name for letting outside objects be supplied instead of built on the spot?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s21",
+            "query": "How often should a team push their work into a shared branch?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s22",
+            "query": "What do you call testing the tiniest pieces of an app by themselves?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s23",
+            "query": "How do you write a Python routine that can pause and pick up later?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s24",
+            "query": "What's it called when forgotten objects keep eating RAM?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s25",
+            "query": "Which shared record book keeps a tamper-proof history of deals?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s26",
+            "query": "What do you call an app split into many small independently deployed services?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s27",
+            "query": "How do companies rent computing power over the network and pay per use?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s28",
+            "query": "Why does bundling everything into one image make software run anywhere?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s29",
+            "query": "Can machines be taught to imitate how people think?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s30",
+            "query": "What branch of AI learns by finding patterns in examples?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s31",
+            "query": "What lets computers read and make sense of everyday speech?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s32",
+            "query": "What all-in-one tool do developers open to write and debug programs?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s33",
+            "query": "How can you retrieve an older copy of a file after editing it?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s34",
+            "query": "What turns human-readable source into instructions the CPU runs?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s35",
+            "query": "What's the name for a structured collection of records kept on a machine?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s36",
+            "query": "Which language handles tables in a relational store?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s37",
+            "query": "How is a non-relational store different from classic tables?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s38",
+            "query": "When a variable stores the whereabouts of another, what is it called?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s39",
+            "query": "What's the standard recipe for solving a task step by step?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s40",
+            "query": "Which paradigm groups behavior together with the data it acts on?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s41",
+            "query": "Which style of coding treats everything as transformations of values?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s42",
+            "query": "What guards a network by deciding which traffic gets through?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s43",
+            "query": "How do you scramble a message so only the intended reader can open it?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s44",
+            "query": "What tiny text file does a site drop in your browser to remember you?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s45",
+            "query": "How does a website remember who you are across multiple page loads?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s46",
+            "query": "What maps names people type to where things live online?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s47",
+            "query": "Which protocol variant stops eavesdroppers on the web?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s48",
+            "query": "What lightweight text format do apps use to swap structured data?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          },
+          {
+            "id": "s49",
+            "query": "Which tag-based scheme wraps content so both people and machines can parse it?",
+            "recall_at_5": 1.0,
+            "recall_at_10": 1.0
+          }
+        ]
+      }
+    }
+  },
   "queries": [
     {
-      "id": "q00",
-      "query": "What is the capital of France?",
+      "id": "s00",
+      "query": "Which French city is home to the country's government?",
       "recall_at_5": 1.0,
       "recall_at_10": 1.0
     },
     {
-      "id": "q01",
-      "query": "What is 2 + 2?",
+      "id": "s01",
+      "query": "How much do you get when you add two and two?",
       "recall_at_5": 1.0,
       "recall_at_10": 1.0
     },
     {
-      "id": "q02",
-      "query": "What is the programming language that uses GIL?",
+      "id": "s02",
+      "query": "Which well-known concurrency bottleneck does Python's interpreter impose?",
       "recall_at_5": 1.0,
       "recall_at_10": 1.0
     },
     {
-      "id": "q03",
-      "query": "What company developed the Hermes Agent?",
+      "id": "s03",
+      "query": "Which organization is behind the Hermes Agent?",
       "recall_at_5": 1.0,
       "recall_at_10": 1.0
     },
     {
-      "id": "q04",
-      "query": "In what year was the first version of Python released?",
+      "id": "s04",
+      "query": "When did Python's initial release happen?",
       "recall_at_5": 1.0,
       "recall_at_10": 1.0
     },
     {
-      "id": "q05",
-      "query": "What does SQL stand for?",
+      "id": "s05",
+      "query": "What is the full form of SQL?",
       "recall_at_5": 1.0,
       "recall_at_10": 1.0
     },
     {
-      "id": "q06",
-      "query": "What is the primary function of a regression test?",
+      "id": "s06",
+      "query": "Why do teams re-run their old test suite after changing code?",
       "recall_at_5": 1.0,
       "recall_at_10": 1.0
     },
     {
-      "id": "q07",
-      "query": "Define latency in the context of web requests.",
+      "id": "s07",
+      "query": "How long does a web round-trip take?",
       "recall_at_5": 1.0,
       "recall_at_10": 1.0
     },
     {
-      "id": "q08",
-      "query": "What is Big O notation used for?",
+      "id": "s08",
+      "query": "How do computer scientists express how a routine scales?",
       "recall_at_5": 1.0,
       "recall_at_10": 1.0
     },
     {
-      "id": "q09",
-      "query": "How does a closure work in JavaScript?",
+      "id": "s09",
+      "query": "Why does an inner function remember the variables around it?",
       "recall_at_5": 1.0,
       "recall_at_10": 1.0
     },
     {
-      "id": "q10",
-      "query": "What are the four pillars of OOP?",
+      "id": "s10",
+      "query": "Name the four core principles taught in OOP courses.",
       "recall_at_5": 1.0,
       "recall_at_10": 1.0
     },
     {
-      "id": "q11",
-      "query": "Explain the difference between a process and a thread.",
+      "id": "s11",
+      "query": "What separates a thread from a full process?",
       "recall_at_5": 1.0,
       "recall_at_10": 1.0
     },
     {
-      "id": "q12",
-      "query": "What is polymorphism?",
+      "id": "s12",
+      "query": "Why can different subclasses handle the same message differently?",
       "recall_at_5": 1.0,
       "recall_at_10": 1.0
     },
     {
-      "id": "q13",
-      "query": "Define abstraction.",
+      "id": "s13",
+      "query": "What does an object hide to keep its internals out of sight?",
       "recall_at_5": 1.0,
       "recall_at_10": 1.0
     },
     {
-      "id": "q14",
-      "query": "What is a REST API?",
+      "id": "s14",
+      "query": "What architectural approach standardises communication between systems on the web?",
       "recall_at_5": 1.0,
       "recall_at_10": 1.0
     },
     {
-      "id": "q15",
-      "query": "What is GraphQL?",
+      "id": "s15",
+      "query": "What kind of query interface does GraphQL give API consumers?",
       "recall_at_5": 1.0,
       "recall_at_10": 1.0
     },
     {
-      "id": "q16",
-      "query": "How does garbage collection work?",
+      "id": "s16",
+      "query": "Which housekeeping mechanism reclaims unused RAM?",
       "recall_at_5": 1.0,
       "recall_at_10": 1.0
     },
     {
-      "id": "q17",
-      "query": "Define recursion.",
+      "id": "s17",
+      "query": "What do programmers call a function that calls itself?",
+      "recall_at_5": 0.0,
+      "recall_at_10": 1.0
+    },
+    {
+      "id": "s18",
+      "query": "Why do systems convert inputs into fixed-length keys?",
       "recall_at_5": 1.0,
       "recall_at_10": 1.0
     },
     {
-      "id": "q18",
-      "query": "What is the purpose of hashing?",
+      "id": "s19",
+      "query": "What happens when processes get stuck waiting on each other?",
       "recall_at_5": 1.0,
       "recall_at_10": 1.0
     },
     {
-      "id": "q19",
-      "query": "Explain deadlock.",
+      "id": "s20",
+      "query": "What's the name for letting outside objects be supplied instead of built on the spot?",
       "recall_at_5": 1.0,
       "recall_at_10": 1.0
     },
     {
-      "id": "q20",
-      "query": "What is dependency injection?",
+      "id": "s21",
+      "query": "How often should a team push their work into a shared branch?",
       "recall_at_5": 1.0,
       "recall_at_10": 1.0
     },
     {
-      "id": "q21",
-      "query": "Define continuous integration.",
+      "id": "s22",
+      "query": "What do you call testing the tiniest pieces of an app by themselves?",
       "recall_at_5": 1.0,
       "recall_at_10": 1.0
     },
     {
-      "id": "q22",
-      "query": "What is unit testing?",
+      "id": "s23",
+      "query": "How do you write a Python routine that can pause and pick up later?",
       "recall_at_5": 1.0,
       "recall_at_10": 1.0
     },
     {
-      "id": "q23",
-      "query": "What is an asynchronous function in Python?",
+      "id": "s24",
+      "query": "What's it called when forgotten objects keep eating RAM?",
       "recall_at_5": 1.0,
       "recall_at_10": 1.0
     },
     {
-      "id": "q24",
-      "query": "What is memory leakage?",
+      "id": "s25",
+      "query": "Which shared record book keeps a tamper-proof history of deals?",
       "recall_at_5": 1.0,
       "recall_at_10": 1.0
     },
     {
-      "id": "q25",
-      "query": "Define blockchain.",
+      "id": "s26",
+      "query": "What do you call an app split into many small independently deployed services?",
       "recall_at_5": 1.0,
       "recall_at_10": 1.0
     },
     {
-      "id": "q26",
-      "query": "What is a microservice architecture?",
+      "id": "s27",
+      "query": "How do companies rent computing power over the network and pay per use?",
       "recall_at_5": 1.0,
       "recall_at_10": 1.0
     },
     {
-      "id": "q27",
-      "query": "What is cloud computing?",
+      "id": "s28",
+      "query": "Why does bundling everything into one image make software run anywhere?",
       "recall_at_5": 1.0,
       "recall_at_10": 1.0
     },
     {
-      "id": "q28",
-      "query": "Explain containerization.",
+      "id": "s29",
+      "query": "Can machines be taught to imitate how people think?",
       "recall_at_5": 1.0,
       "recall_at_10": 1.0
     },
     {
-      "id": "q29",
-      "query": "What is artificial intelligence?",
+      "id": "s30",
+      "query": "What branch of AI learns by finding patterns in examples?",
       "recall_at_5": 1.0,
       "recall_at_10": 1.0
     },
     {
-      "id": "q30",
-      "query": "Define machine learning.",
+      "id": "s31",
+      "query": "What lets computers read and make sense of everyday speech?",
       "recall_at_5": 1.0,
       "recall_at_10": 1.0
     },
     {
-      "id": "q31",
-      "query": "What is natural language processing?",
+      "id": "s32",
+      "query": "What all-in-one tool do developers open to write and debug programs?",
       "recall_at_5": 1.0,
       "recall_at_10": 1.0
     },
     {
-      "id": "q32",
-      "query": "What is an IDE?",
+      "id": "s33",
+      "query": "How can you retrieve an older copy of a file after editing it?",
       "recall_at_5": 1.0,
       "recall_at_10": 1.0
     },
     {
-      "id": "q33",
-      "query": "What is version control?",
+      "id": "s34",
+      "query": "What turns human-readable source into instructions the CPU runs?",
       "recall_at_5": 1.0,
       "recall_at_10": 1.0
     },
     {
-      "id": "q34",
-      "query": "Explain the role of a compiler.",
+      "id": "s35",
+      "query": "What's the name for a structured collection of records kept on a machine?",
       "recall_at_5": 1.0,
       "recall_at_10": 1.0
     },
     {
-      "id": "q35",
-      "query": "What is a database?",
+      "id": "s36",
+      "query": "Which language handles tables in a relational store?",
       "recall_at_5": 1.0,
       "recall_at_10": 1.0
     },
     {
-      "id": "q36",
-      "query": "What is SQL?",
+      "id": "s37",
+      "query": "How is a non-relational store different from classic tables?",
       "recall_at_5": 1.0,
       "recall_at_10": 1.0
     },
     {
-      "id": "q37",
-      "query": "What is NoSQL?",
+      "id": "s38",
+      "query": "When a variable stores the whereabouts of another, what is it called?",
       "recall_at_5": 1.0,
       "recall_at_10": 1.0
     },
     {
-      "id": "q38",
-      "query": "Define a pointer.",
+      "id": "s39",
+      "query": "What's the standard recipe for solving a task step by step?",
       "recall_at_5": 1.0,
       "recall_at_10": 1.0
     },
     {
-      "id": "q39",
-      "query": "What is an algorithm?",
+      "id": "s40",
+      "query": "Which paradigm groups behavior together with the data it acts on?",
       "recall_at_5": 1.0,
       "recall_at_10": 1.0
     },
     {
-      "id": "q40",
-      "query": "What is object-oriented programming?",
+      "id": "s41",
+      "query": "Which style of coding treats everything as transformations of values?",
       "recall_at_5": 1.0,
       "recall_at_10": 1.0
     },
     {
-      "id": "q41",
-      "query": "What is functional programming?",
+      "id": "s42",
+      "query": "What guards a network by deciding which traffic gets through?",
       "recall_at_5": 1.0,
       "recall_at_10": 1.0
     },
     {
-      "id": "q42",
-      "query": "Explain the purpose of a firewall.",
+      "id": "s43",
+      "query": "How do you scramble a message so only the intended reader can open it?",
       "recall_at_5": 1.0,
       "recall_at_10": 1.0
     },
     {
-      "id": "q43",
-      "query": "What is encryption?",
+      "id": "s44",
+      "query": "What tiny text file does a site drop in your browser to remember you?",
       "recall_at_5": 1.0,
       "recall_at_10": 1.0
     },
     {
-      "id": "q44",
-      "query": "What is a cookie?",
+      "id": "s45",
+      "query": "How does a website remember who you are across multiple page loads?",
       "recall_at_5": 1.0,
       "recall_at_10": 1.0
     },
     {
-      "id": "q45",
-      "query": "What is a session?",
+      "id": "s46",
+      "query": "What maps names people type to where things live online?",
       "recall_at_5": 1.0,
       "recall_at_10": 1.0
     },
     {
-      "id": "q46",
-      "query": "Explain DNS.",
+      "id": "s47",
+      "query": "Which protocol variant stops eavesdroppers on the web?",
       "recall_at_5": 1.0,
       "recall_at_10": 1.0
     },
     {
-      "id": "q47",
-      "query": "What is HTTPS?",
+      "id": "s48",
+      "query": "What lightweight text format do apps use to swap structured data?",
       "recall_at_5": 1.0,
       "recall_at_10": 1.0
     },
     {
-      "id": "q48",
-      "query": "What is JSON?",
-      "recall_at_5": 1.0,
-      "recall_at_10": 1.0
-    },
-    {
-      "id": "q49",
-      "query": "What is XML?",
+      "id": "s49",
+      "query": "Which tag-based scheme wraps content so both people and machines can parse it?",
       "recall_at_5": 1.0,
       "recall_at_10": 1.0
     }
-  ]
+  ],
+  "recall_at_5": 0.98,
+  "recall_at_10": 1.0,
+  "tfidf_lexical_recall_at_5": 1.0,
+  "tfidf_lexical_recall_at_10": 1.0,
+  "tfidf_semantic_recall_at_5": 0.7,
+  "tfidf_semantic_recall_at_10": 0.7,
+  "dense_lexical_recall_at_5": 1.0,
+  "dense_lexical_recall_at_10": 1.0,
+  "dense_semantic_recall_at_5": 0.98,
+  "dense_semantic_recall_at_10": 1.0
 }

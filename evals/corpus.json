@@ -1,107 +1,1007 @@
 {
-  "description": "Starter retrieval corpus authored from the golden QA set. Each query has exactly one relevant document. Swap this file for a domain corpus (documents + queries with relevant_ids) to evaluate real retrieval.",
+  "description": "Starter retrieval corpus authored from the golden QA set. Two query tiers over the same documents: 'lexical' queries share vocabulary with the answer sentence, 'semantic' queries are natural paraphrases that mostly avoid it. Each query has exactly one relevant document. Swap this file for a domain corpus (documents + queries with relevant_ids and optional tier) to evaluate real retrieval.",
   "documents": [
-    {"id": "d00", "text": "Paris is the capital city of France, located in the north of the country."},
-    {"id": "d01", "text": "The arithmetic expression 2 + 2 evaluates to 4."},
-    {"id": "d02", "text": "Python is the programming language whose interpreter uses the Global Interpreter Lock, known as the GIL."},
-    {"id": "d03", "text": "The Hermes Agent was developed by the company Nous Research."},
-    {"id": "d04", "text": "The first version of the Python programming language was released in the year 1991."},
-    {"id": "d05", "text": "SQL stands for Structured Query Language, used to manage relational databases."},
-    {"id": "d06", "text": "The primary function of a regression test is to verify that recent changes have not broken existing functionality."},
-    {"id": "d07", "text": "In the context of web requests, latency is the time it takes for a request to travel from the client to the server and for the response to return."},
-    {"id": "d08", "text": "Big O notation is used for describing the limiting behavior of a function when the argument tends towards a particular value or infinity, and it is often used to analyze algorithmic complexity."},
-    {"id": "d09", "text": "In JavaScript, a closure works as a function bundled together with references to its surrounding state, known as the lexical environment."},
-    {"id": "d10", "text": "The four pillars of object-oriented programming are encapsulation, abstraction, inheritance, and polymorphism."},
-    {"id": "d11", "text": "A process is an independent execution unit with its own memory space, while a thread is a lightweight unit within a process that shares its memory."},
-    {"id": "d12", "text": "Polymorphism is the ability of different classes to respond to the same method call in their own specific way."},
-    {"id": "d13", "text": "Abstraction is the process of hiding complex implementation details and showing only the necessary features of an object."},
-    {"id": "d14", "text": "A REST API, or Representational State Transfer API, is an architectural style for providing standards between computer systems on the web."},
-    {"id": "d15", "text": "GraphQL is a query language for APIs and a runtime for fulfilling those queries with your existing data."},
-    {"id": "d16", "text": "Garbage collection works as a form of automatic memory management that identifies and frees memory no longer in use by the program."},
-    {"id": "d17", "text": "Recursion is a method of solving a problem where the solution depends on solutions to smaller instances of the same problem."},
-    {"id": "d18", "text": "The purpose of hashing is to map data of arbitrary size to fixed-size values, typically for efficient data retrieval or security."},
-    {"id": "d19", "text": "A deadlock is a situation where two or more processes are unable to proceed because each is waiting for the other to release a resource."},
-    {"id": "d20", "text": "Dependency injection is a design pattern where an object receives other objects that it depends on, rather than creating them internally."},
-    {"id": "d21", "text": "Continuous integration is the practice of merging all developers' working copies to a shared mainline several times a day."},
-    {"id": "d22", "text": "Unit testing is the process of testing the smallest testable parts of an application in isolation."},
-    {"id": "d23", "text": "An asynchronous function in Python is a function defined with async def that can be paused and resumed, allowing for concurrent execution using an event loop."},
-    {"id": "d24", "text": "Memory leakage is a situation where a program incorrectly manages memory allocations such that memory which is no longer needed is not released."},
-    {"id": "d25", "text": "A blockchain is a distributed, decentralized ledger that records transactions across many computers."},
-    {"id": "d26", "text": "A microservice architecture is an architectural style that structures an application as a collection of small, autonomous services modeled around a business domain."},
-    {"id": "d27", "text": "Cloud computing is the on-demand delivery of IT resources over the internet with pay-as-you-go pricing."},
-    {"id": "d28", "text": "Containerization means packaging software code together with all its components like libraries, frameworks and other dependencies so that it can run uniformly and consistently on any infrastructure."},
-    {"id": "d29", "text": "Artificial intelligence is the simulation of human intelligence processes by computer systems."},
-    {"id": "d30", "text": "Machine learning is a subset of artificial intelligence that involves training algorithms to learn from and make predictions based on data."},
-    {"id": "d31", "text": "Natural language processing is a field of AI that gives machines the ability to read, understand, and derive meaning from human languages."},
-    {"id": "d32", "text": "An IDE, or Integrated Development Environment, is a software application that provides comprehensive facilities for software development."},
-    {"id": "d33", "text": "Version control systems record changes to a file or set of files over time so that you can recall specific versions later."},
-    {"id": "d34", "text": "The role of a compiler is to translate source code written in a high-level programming language into machine code that a computer's processor can execute."},
-    {"id": "d35", "text": "A database is an organized collection of structured information, or data, typically stored electronically in a computer system."},
-    {"id": "d36", "text": "SQL, or Structured Query Language, is the standard language for managing and manipulating relational databases."},
-    {"id": "d37", "text": "NoSQL is a category of database management systems that do not use the traditional relational table-based structure."},
-    {"id": "d38", "text": "A pointer is a variable whose value is the memory address of another variable."},
-    {"id": "d39", "text": "An algorithm is a step-by-step procedure or formula for solving a problem."},
-    {"id": "d40", "text": "Object-oriented programming is a programming paradigm based on the concept of objects, which can contain data and code."},
-    {"id": "d41", "text": "Functional programming is a programming paradigm where programs are constructed by applying and composing functions."},
-    {"id": "d42", "text": "The purpose of a firewall is to monitor and control incoming and outgoing network traffic based on predetermined security rules."},
-    {"id": "d43", "text": "Encryption is the process of encoding information or messages in such a way that unauthorized parties cannot read it."},
-    {"id": "d44", "text": "A cookie is a small piece of data stored on the user's computer by the web browser while browsing a website."},
-    {"id": "d45", "text": "A session is a mechanism for maintaining state between a client and a server over a series of requests."},
-    {"id": "d46", "text": "DNS, the Domain Name System, is the hierarchical and decentralized naming system for computers, services, or other resources connected to the Internet."},
-    {"id": "d47", "text": "HTTPS, or Hypertext Transfer Protocol Secure, is an extension of HTTP for secure communication over a computer network."},
-    {"id": "d48", "text": "JSON, or JavaScript Object Notation, is a lightweight format for storing and transporting data."},
-    {"id": "d49", "text": "XML, or Extensible Markup Language, is a markup language that defines a set of rules for encoding documents in a format that is both human-readable and machine-readable."}
+    {
+      "id": "d00",
+      "text": "Paris is the capital city of France, located in the north of the country."
+    },
+    {
+      "id": "d01",
+      "text": "The arithmetic expression 2 + 2 evaluates to 4."
+    },
+    {
+      "id": "d02",
+      "text": "Python is the programming language whose interpreter uses the Global Interpreter Lock, known as the GIL."
+    },
+    {
+      "id": "d03",
+      "text": "The Hermes Agent was developed by the company Nous Research."
+    },
+    {
+      "id": "d04",
+      "text": "The first version of the Python programming language was released in the year 1991."
+    },
+    {
+      "id": "d05",
+      "text": "SQL stands for Structured Query Language, used to manage relational databases."
+    },
+    {
+      "id": "d06",
+      "text": "The primary function of a regression test is to verify that recent changes have not broken existing functionality."
+    },
+    {
+      "id": "d07",
+      "text": "In the context of web requests, latency is the time it takes for a request to travel from the client to the server and for the response to return."
+    },
+    {
+      "id": "d08",
+      "text": "Big O notation is used for describing the limiting behavior of a function when the argument tends towards a particular value or infinity, and it is often used to analyze algorithmic complexity."
+    },
+    {
+      "id": "d09",
+      "text": "In JavaScript, a closure works as a function bundled together with references to its surrounding state, known as the lexical environment."
+    },
+    {
+      "id": "d10",
+      "text": "The four pillars of object-oriented programming are encapsulation, abstraction, inheritance, and polymorphism."
+    },
+    {
+      "id": "d11",
+      "text": "A process is an independent execution unit with its own memory space, while a thread is a lightweight unit within a process that shares its memory."
+    },
+    {
+      "id": "d12",
+      "text": "Polymorphism is the ability of different classes to respond to the same method call in their own specific way."
+    },
+    {
+      "id": "d13",
+      "text": "Abstraction is the process of hiding complex implementation details and showing only the necessary features of an object."
+    },
+    {
+      "id": "d14",
+      "text": "A REST API, or Representational State Transfer API, is an architectural style for providing standards between computer systems on the web."
+    },
+    {
+      "id": "d15",
+      "text": "GraphQL is a query language for APIs and a runtime for fulfilling those queries with your existing data."
+    },
+    {
+      "id": "d16",
+      "text": "Garbage collection works as a form of automatic memory management that identifies and frees memory no longer in use by the program."
+    },
+    {
+      "id": "d17",
+      "text": "Recursion is a method of solving a problem where the solution depends on solutions to smaller instances of the same problem."
+    },
+    {
+      "id": "d18",
+      "text": "The purpose of hashing is to map data of arbitrary size to fixed-size values, typically for efficient data retrieval or security."
+    },
+    {
+      "id": "d19",
+      "text": "A deadlock is a situation where two or more processes are unable to proceed because each is waiting for the other to release a resource."
+    },
+    {
+      "id": "d20",
+      "text": "Dependency injection is a design pattern where an object receives other objects that it depends on, rather than creating them internally."
+    },
+    {
+      "id": "d21",
+      "text": "Continuous integration is the practice of merging all developers' working copies to a shared mainline several times a day."
+    },
+    {
+      "id": "d22",
+      "text": "Unit testing is the process of testing the smallest testable parts of an application in isolation."
+    },
+    {
+      "id": "d23",
+      "text": "An asynchronous function in Python is a function defined with async def that can be paused and resumed, allowing for concurrent execution using an event loop."
+    },
+    {
+      "id": "d24",
+      "text": "Memory leakage is a situation where a program incorrectly manages memory allocations such that memory which is no longer needed is not released."
+    },
+    {
+      "id": "d25",
+      "text": "A blockchain is a distributed, decentralized ledger that records transactions across many computers."
+    },
+    {
+      "id": "d26",
+      "text": "A microservice architecture is an architectural style that structures an application as a collection of small, autonomous services modeled around a business domain."
+    },
+    {
+      "id": "d27",
+      "text": "Cloud computing is the on-demand delivery of IT resources over the internet with pay-as-you-go pricing."
+    },
+    {
+      "id": "d28",
+      "text": "Containerization means packaging software code together with all its components like libraries, frameworks and other dependencies so that it can run uniformly and consistently on any infrastructure."
+    },
+    {
+      "id": "d29",
+      "text": "Artificial intelligence is the simulation of human intelligence processes by computer systems."
+    },
+    {
+      "id": "d30",
+      "text": "Machine learning is a subset of artificial intelligence that involves training algorithms to learn from and make predictions based on data."
+    },
+    {
+      "id": "d31",
+      "text": "Natural language processing is a field of AI that gives machines the ability to read, understand, and derive meaning from human languages."
+    },
+    {
+      "id": "d32",
+      "text": "An IDE, or Integrated Development Environment, is a software application that provides comprehensive facilities for software development."
+    },
+    {
+      "id": "d33",
+      "text": "Version control systems record changes to a file or set of files over time so that you can recall specific versions later."
+    },
+    {
+      "id": "d34",
+      "text": "The role of a compiler is to translate source code written in a high-level programming language into machine code that a computer's processor can execute."
+    },
+    {
+      "id": "d35",
+      "text": "A database is an organized collection of structured information, or data, typically stored electronically in a computer system."
+    },
+    {
+      "id": "d36",
+      "text": "SQL, or Structured Query Language, is the standard language for managing and manipulating relational databases."
+    },
+    {
+      "id": "d37",
+      "text": "NoSQL is a category of database management systems that do not use the traditional relational table-based structure."
+    },
+    {
+      "id": "d38",
+      "text": "A pointer is a variable whose value is the memory address of another variable."
+    },
+    {
+      "id": "d39",
+      "text": "An algorithm is a step-by-step procedure or formula for solving a problem."
+    },
+    {
+      "id": "d40",
+      "text": "Object-oriented programming is a programming paradigm based on the concept of objects, which can contain data and code."
+    },
+    {
+      "id": "d41",
+      "text": "Functional programming is a programming paradigm where programs are constructed by applying and composing functions."
+    },
+    {
+      "id": "d42",
+      "text": "The purpose of a firewall is to monitor and control incoming and outgoing network traffic based on predetermined security rules."
+    },
+    {
+      "id": "d43",
+      "text": "Encryption is the process of encoding information or messages in such a way that unauthorized parties cannot read it."
+    },
+    {
+      "id": "d44",
+      "text": "A cookie is a small piece of data stored on the user's computer by the web browser while browsing a website."
+    },
+    {
+      "id": "d45",
+      "text": "A session is a mechanism for maintaining state between a client and a server over a series of requests."
+    },
+    {
+      "id": "d46",
+      "text": "DNS, the Domain Name System, is the hierarchical and decentralized naming system for computers, services, or other resources connected to the Internet."
+    },
+    {
+      "id": "d47",
+      "text": "HTTPS, or Hypertext Transfer Protocol Secure, is an extension of HTTP for secure communication over a computer network."
+    },
+    {
+      "id": "d48",
+      "text": "JSON, or JavaScript Object Notation, is a lightweight format for storing and transporting data."
+    },
+    {
+      "id": "d49",
+      "text": "XML, or Extensible Markup Language, is a markup language that defines a set of rules for encoding documents in a format that is both human-readable and machine-readable."
+    }
   ],
   "queries": [
-    {"id": "q00", "text": "What is the capital of France?", "relevant_ids": ["d00"]},
-    {"id": "q01", "text": "What is 2 + 2?", "relevant_ids": ["d01"]},
-    {"id": "q02", "text": "What is the programming language that uses GIL?", "relevant_ids": ["d02"]},
-    {"id": "q03", "text": "What company developed the Hermes Agent?", "relevant_ids": ["d03"]},
-    {"id": "q04", "text": "In what year was the first version of Python released?", "relevant_ids": ["d04"]},
-    {"id": "q05", "text": "What does SQL stand for?", "relevant_ids": ["d05"]},
-    {"id": "q06", "text": "What is the primary function of a regression test?", "relevant_ids": ["d06"]},
-    {"id": "q07", "text": "Define latency in the context of web requests.", "relevant_ids": ["d07"]},
-    {"id": "q08", "text": "What is Big O notation used for?", "relevant_ids": ["d08"]},
-    {"id": "q09", "text": "How does a closure work in JavaScript?", "relevant_ids": ["d09"]},
-    {"id": "q10", "text": "What are the four pillars of OOP?", "relevant_ids": ["d10"]},
-    {"id": "q11", "text": "Explain the difference between a process and a thread.", "relevant_ids": ["d11"]},
-    {"id": "q12", "text": "What is polymorphism?", "relevant_ids": ["d12"]},
-    {"id": "q13", "text": "Define abstraction.", "relevant_ids": ["d13"]},
-    {"id": "q14", "text": "What is a REST API?", "relevant_ids": ["d14"]},
-    {"id": "q15", "text": "What is GraphQL?", "relevant_ids": ["d15"]},
-    {"id": "q16", "text": "How does garbage collection work?", "relevant_ids": ["d16"]},
-    {"id": "q17", "text": "Define recursion.", "relevant_ids": ["d17"]},
-    {"id": "q18", "text": "What is the purpose of hashing?", "relevant_ids": ["d18"]},
-    {"id": "q19", "text": "Explain deadlock.", "relevant_ids": ["d19"]},
-    {"id": "q20", "text": "What is dependency injection?", "relevant_ids": ["d20"]},
-    {"id": "q21", "text": "Define continuous integration.", "relevant_ids": ["d21"]},
-    {"id": "q22", "text": "What is unit testing?", "relevant_ids": ["d22"]},
-    {"id": "q23", "text": "What is an asynchronous function in Python?", "relevant_ids": ["d23"]},
-    {"id": "q24", "text": "What is memory leakage?", "relevant_ids": ["d24"]},
-    {"id": "q25", "text": "Define blockchain.", "relevant_ids": ["d25"]},
-    {"id": "q26", "text": "What is a microservice architecture?", "relevant_ids": ["d26"]},
-    {"id": "q27", "text": "What is cloud computing?", "relevant_ids": ["d27"]},
-    {"id": "q28", "text": "Explain containerization.", "relevant_ids": ["d28"]},
-    {"id": "q29", "text": "What is artificial intelligence?", "relevant_ids": ["d29"]},
-    {"id": "q30", "text": "Define machine learning.", "relevant_ids": ["d30"]},
-    {"id": "q31", "text": "What is natural language processing?", "relevant_ids": ["d31"]},
-    {"id": "q32", "text": "What is an IDE?", "relevant_ids": ["d32"]},
-    {"id": "q33", "text": "What is version control?", "relevant_ids": ["d33"]},
-    {"id": "q34", "text": "Explain the role of a compiler.", "relevant_ids": ["d34"]},
-    {"id": "q35", "text": "What is a database?", "relevant_ids": ["d35"]},
-    {"id": "q36", "text": "What is SQL?", "relevant_ids": ["d36"]},
-    {"id": "q37", "text": "What is NoSQL?", "relevant_ids": ["d37"]},
-    {"id": "q38", "text": "Define a pointer.", "relevant_ids": ["d38"]},
-    {"id": "q39", "text": "What is an algorithm?", "relevant_ids": ["d39"]},
-    {"id": "q40", "text": "What is object-oriented programming?", "relevant_ids": ["d40"]},
-    {"id": "q41", "text": "What is functional programming?", "relevant_ids": ["d41"]},
-    {"id": "q42", "text": "Explain the purpose of a firewall.", "relevant_ids": ["d42"]},
-    {"id": "q43", "text": "What is encryption?", "relevant_ids": ["d43"]},
-    {"id": "q44", "text": "What is a cookie?", "relevant_ids": ["d44"]},
-    {"id": "q45", "text": "What is a session?", "relevant_ids": ["d45"]},
-    {"id": "q46", "text": "Explain DNS.", "relevant_ids": ["d46"]},
-    {"id": "q47", "text": "What is HTTPS?", "relevant_ids": ["d47"]},
-    {"id": "q48", "text": "What is JSON?", "relevant_ids": ["d48"]},
-    {"id": "q49", "text": "What is XML?", "relevant_ids": ["d49"]}
+    {
+      "id": "q00",
+      "text": "What is the capital of France?",
+      "relevant_ids": [
+        "d00"
+      ],
+      "tier": "lexical"
+    },
+    {
+      "id": "q01",
+      "text": "What is 2 + 2?",
+      "relevant_ids": [
+        "d01"
+      ],
+      "tier": "lexical"
+    },
+    {
+      "id": "q02",
+      "text": "What is the programming language that uses GIL?",
+      "relevant_ids": [
+        "d02"
+      ],
+      "tier": "lexical"
+    },
+    {
+      "id": "q03",
+      "text": "What company developed the Hermes Agent?",
+      "relevant_ids": [
+        "d03"
+      ],
+      "tier": "lexical"
+    },
+    {
+      "id": "q04",
+      "text": "In what year was the first version of Python released?",
+      "relevant_ids": [
+        "d04"
+      ],
+      "tier": "lexical"
+    },
+    {
+      "id": "q05",
+      "text": "What does SQL stand for?",
+      "relevant_ids": [
+        "d05"
+      ],
+      "tier": "lexical"
+    },
+    {
+      "id": "q06",
+      "text": "What is the primary function of a regression test?",
+      "relevant_ids": [
+        "d06"
+      ],
+      "tier": "lexical"
+    },
+    {
+      "id": "q07",
+      "text": "Define latency in the context of web requests.",
+      "relevant_ids": [
+        "d07"
+      ],
+      "tier": "lexical"
+    },
+    {
+      "id": "q08",
+      "text": "What is Big O notation used for?",
+      "relevant_ids": [
+        "d08"
+      ],
+      "tier": "lexical"
+    },
+    {
+      "id": "q09",
+      "text": "How does a closure work in JavaScript?",
+      "relevant_ids": [
+        "d09"
+      ],
+      "tier": "lexical"
+    },
+    {
+      "id": "q10",
+      "text": "What are the four pillars of OOP?",
+      "relevant_ids": [
+        "d10"
+      ],
+      "tier": "lexical"
+    },
+    {
+      "id": "q11",
+      "text": "Explain the difference between a process and a thread.",
+      "relevant_ids": [
+        "d11"
+      ],
+      "tier": "lexical"
+    },
+    {
+      "id": "q12",
+      "text": "What is polymorphism?",
+      "relevant_ids": [
+        "d12"
+      ],
+      "tier": "lexical"
+    },
+    {
+      "id": "q13",
+      "text": "Define abstraction.",
+      "relevant_ids": [
+        "d13"
+      ],
+      "tier": "lexical"
+    },
+    {
+      "id": "q14",
+      "text": "What is a REST API?",
+      "relevant_ids": [
+        "d14"
+      ],
+      "tier": "lexical"
+    },
+    {
+      "id": "q15",
+      "text": "What is GraphQL?",
+      "relevant_ids": [
+        "d15"
+      ],
+      "tier": "lexical"
+    },
+    {
+      "id": "q16",
+      "text": "How does garbage collection work?",
+      "relevant_ids": [
+        "d16"
+      ],
+      "tier": "lexical"
+    },
+    {
+      "id": "q17",
+      "text": "Define recursion.",
+      "relevant_ids": [
+        "d17"
+      ],
+      "tier": "lexical"
+    },
+    {
+      "id": "q18",
+      "text": "What is the purpose of hashing?",
+      "relevant_ids": [
+        "d18"
+      ],
+      "tier": "lexical"
+    },
+    {
+      "id": "q19",
+      "text": "Explain deadlock.",
+      "relevant_ids": [
+        "d19"
+      ],
+      "tier": "lexical"
+    },
+    {
+      "id": "q20",
+      "text": "What is dependency injection?",
+      "relevant_ids": [
+        "d20"
+      ],
+      "tier": "lexical"
+    },
+    {
+      "id": "q21",
+      "text": "Define continuous integration.",
+      "relevant_ids": [
+        "d21"
+      ],
+      "tier": "lexical"
+    },
+    {
+      "id": "q22",
+      "text": "What is unit testing?",
+      "relevant_ids": [
+        "d22"
+      ],
+      "tier": "lexical"
+    },
+    {
+      "id": "q23",
+      "text": "What is an asynchronous function in Python?",
+      "relevant_ids": [
+        "d23"
+      ],
+      "tier": "lexical"
+    },
+    {
+      "id": "q24",
+      "text": "What is memory leakage?",
+      "relevant_ids": [
+        "d24"
+      ],
+      "tier": "lexical"
+    },
+    {
+      "id": "q25",
+      "text": "Define blockchain.",
+      "relevant_ids": [
+        "d25"
+      ],
+      "tier": "lexical"
+    },
+    {
+      "id": "q26",
+      "text": "What is a microservice architecture?",
+      "relevant_ids": [
+        "d26"
+      ],
+      "tier": "lexical"
+    },
+    {
+      "id": "q27",
+      "text": "What is cloud computing?",
+      "relevant_ids": [
+        "d27"
+      ],
+      "tier": "lexical"
+    },
+    {
+      "id": "q28",
+      "text": "Explain containerization.",
+      "relevant_ids": [
+        "d28"
+      ],
+      "tier": "lexical"
+    },
+    {
+      "id": "q29",
+      "text": "What is artificial intelligence?",
+      "relevant_ids": [
+        "d29"
+      ],
+      "tier": "lexical"
+    },
+    {
+      "id": "q30",
+      "text": "Define machine learning.",
+      "relevant_ids": [
+        "d30"
+      ],
+      "tier": "lexical"
+    },
+    {
+      "id": "q31",
+      "text": "What is natural language processing?",
+      "relevant_ids": [
+        "d31"
+      ],
+      "tier": "lexical"
+    },
+    {
+      "id": "q32",
+      "text": "What is an IDE?",
+      "relevant_ids": [
+        "d32"
+      ],
+      "tier": "lexical"
+    },
+    {
+      "id": "q33",
+      "text": "What is version control?",
+      "relevant_ids": [
+        "d33"
+      ],
+      "tier": "lexical"
+    },
+    {
+      "id": "q34",
+      "text": "Explain the role of a compiler.",
+      "relevant_ids": [
+        "d34"
+      ],
+      "tier": "lexical"
+    },
+    {
+      "id": "q35",
+      "text": "What is a database?",
+      "relevant_ids": [
+        "d35"
+      ],
+      "tier": "lexical"
+    },
+    {
+      "id": "q36",
+      "text": "What is SQL?",
+      "relevant_ids": [
+        "d36"
+      ],
+      "tier": "lexical"
+    },
+    {
+      "id": "q37",
+      "text": "What is NoSQL?",
+      "relevant_ids": [
+        "d37"
+      ],
+      "tier": "lexical"
+    },
+    {
+      "id": "q38",
+      "text": "Define a pointer.",
+      "relevant_ids": [
+        "d38"
+      ],
+      "tier": "lexical"
+    },
+    {
+      "id": "q39",
+      "text": "What is an algorithm?",
+      "relevant_ids": [
+        "d39"
+      ],
+      "tier": "lexical"
+    },
+    {
+      "id": "q40",
+      "text": "What is object-oriented programming?",
+      "relevant_ids": [
+        "d40"
+      ],
+      "tier": "lexical"
+    },
+    {
+      "id": "q41",
+      "text": "What is functional programming?",
+      "relevant_ids": [
+        "d41"
+      ],
+      "tier": "lexical"
+    },
+    {
+      "id": "q42",
+      "text": "Explain the purpose of a firewall.",
+      "relevant_ids": [
+        "d42"
+      ],
+      "tier": "lexical"
+    },
+    {
+      "id": "q43",
+      "text": "What is encryption?",
+      "relevant_ids": [
+        "d43"
+      ],
+      "tier": "lexical"
+    },
+    {
+      "id": "q44",
+      "text": "What is a cookie?",
+      "relevant_ids": [
+        "d44"
+      ],
+      "tier": "lexical"
+    },
+    {
+      "id": "q45",
+      "text": "What is a session?",
+      "relevant_ids": [
+        "d45"
+      ],
+      "tier": "lexical"
+    },
+    {
+      "id": "q46",
+      "text": "Explain DNS.",
+      "relevant_ids": [
+        "d46"
+      ],
+      "tier": "lexical"
+    },
+    {
+      "id": "q47",
+      "text": "What is HTTPS?",
+      "relevant_ids": [
+        "d47"
+      ],
+      "tier": "lexical"
+    },
+    {
+      "id": "q48",
+      "text": "What is JSON?",
+      "relevant_ids": [
+        "d48"
+      ],
+      "tier": "lexical"
+    },
+    {
+      "id": "q49",
+      "text": "What is XML?",
+      "relevant_ids": [
+        "d49"
+      ],
+      "tier": "lexical"
+    },
+    {
+      "id": "s00",
+      "text": "Which French city is home to the country's government?",
+      "relevant_ids": [
+        "d00"
+      ],
+      "tier": "semantic"
+    },
+    {
+      "id": "s01",
+      "text": "How much do you get when you add two and two?",
+      "relevant_ids": [
+        "d01"
+      ],
+      "tier": "semantic"
+    },
+    {
+      "id": "s02",
+      "text": "Which well-known concurrency bottleneck does Python's interpreter impose?",
+      "relevant_ids": [
+        "d02"
+      ],
+      "tier": "semantic"
+    },
+    {
+      "id": "s03",
+      "text": "Which organization is behind the Hermes Agent?",
+      "relevant_ids": [
+        "d03"
+      ],
+      "tier": "semantic"
+    },
+    {
+      "id": "s04",
+      "text": "When did Python's initial release happen?",
+      "relevant_ids": [
+        "d04"
+      ],
+      "tier": "semantic"
+    },
+    {
+      "id": "s05",
+      "text": "What is the full form of SQL?",
+      "relevant_ids": [
+        "d05"
+      ],
+      "tier": "semantic"
+    },
+    {
+      "id": "s06",
+      "text": "Why do teams re-run their old test suite after changing code?",
+      "relevant_ids": [
+        "d06"
+      ],
+      "tier": "semantic"
+    },
+    {
+      "id": "s07",
+      "text": "How long does a web round-trip take?",
+      "relevant_ids": [
+        "d07"
+      ],
+      "tier": "semantic"
+    },
+    {
+      "id": "s08",
+      "text": "How do computer scientists express how a routine scales?",
+      "relevant_ids": [
+        "d08"
+      ],
+      "tier": "semantic"
+    },
+    {
+      "id": "s09",
+      "text": "Why does an inner function remember the variables around it?",
+      "relevant_ids": [
+        "d09"
+      ],
+      "tier": "semantic"
+    },
+    {
+      "id": "s10",
+      "text": "Name the four core principles taught in OOP courses.",
+      "relevant_ids": [
+        "d10"
+      ],
+      "tier": "semantic"
+    },
+    {
+      "id": "s11",
+      "text": "What separates a thread from a full process?",
+      "relevant_ids": [
+        "d11"
+      ],
+      "tier": "semantic"
+    },
+    {
+      "id": "s12",
+      "text": "Why can different subclasses handle the same message differently?",
+      "relevant_ids": [
+        "d12"
+      ],
+      "tier": "semantic"
+    },
+    {
+      "id": "s13",
+      "text": "What does an object hide to keep its internals out of sight?",
+      "relevant_ids": [
+        "d13"
+      ],
+      "tier": "semantic"
+    },
+    {
+      "id": "s14",
+      "text": "What architectural approach standardises communication between systems on the web?",
+      "relevant_ids": [
+        "d14"
+      ],
+      "tier": "semantic"
+    },
+    {
+      "id": "s15",
+      "text": "What kind of query interface does GraphQL give API consumers?",
+      "relevant_ids": [
+        "d15"
+      ],
+      "tier": "semantic"
+    },
+    {
+      "id": "s16",
+      "text": "Which housekeeping mechanism reclaims unused RAM?",
+      "relevant_ids": [
+        "d16"
+      ],
+      "tier": "semantic"
+    },
+    {
+      "id": "s17",
+      "text": "What do programmers call a function that calls itself?",
+      "relevant_ids": [
+        "d17"
+      ],
+      "tier": "semantic"
+    },
+    {
+      "id": "s18",
+      "text": "Why do systems convert inputs into fixed-length keys?",
+      "relevant_ids": [
+        "d18"
+      ],
+      "tier": "semantic"
+    },
+    {
+      "id": "s19",
+      "text": "What happens when processes get stuck waiting on each other?",
+      "relevant_ids": [
+        "d19"
+      ],
+      "tier": "semantic"
+    },
+    {
+      "id": "s20",
+      "text": "What's the name for letting outside objects be supplied instead of built on the spot?",
+      "relevant_ids": [
+        "d20"
+      ],
+      "tier": "semantic"
+    },
+    {
+      "id": "s21",
+      "text": "How often should a team push their work into a shared branch?",
+      "relevant_ids": [
+        "d21"
+      ],
+      "tier": "semantic"
+    },
+    {
+      "id": "s22",
+      "text": "What do you call testing the tiniest pieces of an app by themselves?",
+      "relevant_ids": [
+        "d22"
+      ],
+      "tier": "semantic"
+    },
+    {
+      "id": "s23",
+      "text": "How do you write a Python routine that can pause and pick up later?",
+      "relevant_ids": [
+        "d23"
+      ],
+      "tier": "semantic"
+    },
+    {
+      "id": "s24",
+      "text": "What's it called when forgotten objects keep eating RAM?",
+      "relevant_ids": [
+        "d24"
+      ],
+      "tier": "semantic"
+    },
+    {
+      "id": "s25",
+      "text": "Which shared record book keeps a tamper-proof history of deals?",
+      "relevant_ids": [
+        "d25"
+      ],
+      "tier": "semantic"
+    },
+    {
+      "id": "s26",
+      "text": "What do you call an app split into many small independently deployed services?",
+      "relevant_ids": [
+        "d26"
+      ],
+      "tier": "semantic"
+    },
+    {
+      "id": "s27",
+      "text": "How do companies rent computing power over the network and pay per use?",
+      "relevant_ids": [
+        "d27"
+      ],
+      "tier": "semantic"
+    },
+    {
+      "id": "s28",
+      "text": "Why does bundling everything into one image make software run anywhere?",
+      "relevant_ids": [
+        "d28"
+      ],
+      "tier": "semantic"
+    },
+    {
+      "id": "s29",
+      "text": "Can machines be taught to imitate how people think?",
+      "relevant_ids": [
+        "d29"
+      ],
+      "tier": "semantic"
+    },
+    {
+      "id": "s30",
+      "text": "What branch of AI learns by finding patterns in examples?",
+      "relevant_ids": [
+        "d30"
+      ],
+      "tier": "semantic"
+    },
+    {
+      "id": "s31",
+      "text": "What lets computers read and make sense of everyday speech?",
+      "relevant_ids": [
+        "d31"
+      ],
+      "tier": "semantic"
+    },
+    {
+      "id": "s32",
+      "text": "What all-in-one tool do developers open to write and debug programs?",
+      "relevant_ids": [
+        "d32"
+      ],
+      "tier": "semantic"
+    },
+    {
+      "id": "s33",
+      "text": "How can you retrieve an older copy of a file after editing it?",
+      "relevant_ids": [
+        "d33"
+      ],
+      "tier": "semantic"
+    },
+    {
+      "id": "s34",
+      "text": "What turns human-readable source into instructions the CPU runs?",
+      "relevant_ids": [
+        "d34"
+      ],
+      "tier": "semantic"
+    },
+    {
+      "id": "s35",
+      "text": "What's the name for a structured collection of records kept on a machine?",
+      "relevant_ids": [
+        "d35"
+      ],
+      "tier": "semantic"
+    },
+    {
+      "id": "s36",
+      "text": "Which language handles tables in a relational store?",
+      "relevant_ids": [
+        "d36"
+      ],
+      "tier": "semantic"
+    },
+    {
+      "id": "s37",
+      "text": "How is a non-relational store different from classic tables?",
+      "relevant_ids": [
+        "d37"
+      ],
+      "tier": "semantic"
+    },
+    {
+      "id": "s38",
+      "text": "When a variable stores the whereabouts of another, what is it called?",
+      "relevant_ids": [
+        "d38"
+      ],
+      "tier": "semantic"
+    },
+    {
+      "id": "s39",
+      "text": "What's the standard recipe for solving a task step by step?",
+      "relevant_ids": [
+        "d39"
+      ],
+      "tier": "semantic"
+    },
+    {
+      "id": "s40",
+      "text": "Which paradigm groups behavior together with the data it acts on?",
+      "relevant_ids": [
+        "d40"
+      ],
+      "tier": "semantic"
+    },
+    {
+      "id": "s41",
+      "text": "Which style of coding treats everything as transformations of values?",
+      "relevant_ids": [
+        "d41"
+      ],
+      "tier": "semantic"
+    },
+    {
+      "id": "s42",
+      "text": "What guards a network by deciding which traffic gets through?",
+      "relevant_ids": [
+        "d42"
+      ],
+      "tier": "semantic"
+    },
+    {
+      "id": "s43",
+      "text": "How do you scramble a message so only the intended reader can open it?",
+      "relevant_ids": [
+        "d43"
+      ],
+      "tier": "semantic"
+    },
+    {
+      "id": "s44",
+      "text": "What tiny text file does a site drop in your browser to remember you?",
+      "relevant_ids": [
+        "d44"
+      ],
+      "tier": "semantic"
+    },
+    {
+      "id": "s45",
+      "text": "How does a website remember who you are across multiple page loads?",
+      "relevant_ids": [
+        "d45"
+      ],
+      "tier": "semantic"
+    },
+    {
+      "id": "s46",
+      "text": "What maps names people type to where things live online?",
+      "relevant_ids": [
+        "d46"
+      ],
+      "tier": "semantic"
+    },
+    {
+      "id": "s47",
+      "text": "Which protocol variant stops eavesdroppers on the web?",
+      "relevant_ids": [
+        "d47"
+      ],
+      "tier": "semantic"
+    },
+    {
+      "id": "s48",
+      "text": "What lightweight text format do apps use to swap structured data?",
+      "relevant_ids": [
+        "d48"
+      ],
+      "tier": "semantic"
+    },
+    {
+      "id": "s49",
+      "text": "Which tag-based scheme wraps content so both people and machines can parse it?",
+      "relevant_ids": [
+        "d49"
+      ],
+      "tier": "semantic"
+    }
   ]
 }
