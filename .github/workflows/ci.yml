@@ -32,8 +32,8 @@ jobs:
       - name: Retrieval benchmark
         run: python -m evals.runner
 
-      - name: Regression gate (headline: dense/semantic)
+      - name: "Regression gate (headline: dense/semantic)"
         run: python -m evals.regression_gate evals/baseline_report.json evals/reports/latest.json --metric recall_at_10
 
-      - name: Regression gate (tfidf semantic)
+      - name: "Regression gate (tfidf semantic)"
         run: python -m evals.regression_gate evals/baseline_report.json evals/reports/latest.json --metric tfidf_semantic_recall_at_10
