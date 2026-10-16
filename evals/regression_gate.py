@@ -15,7 +15,7 @@ import argparse
 import json
 import sys
 from pathlib import Path
-from typing import Any, Dict, Tuple
+from typing import Any
 
 DEFAULT_METRIC = "exact_match"
 DEFAULT_THRESHOLD = 0.05
@@ -25,7 +25,7 @@ class MissingMetricError(KeyError):
     """Raised when a report does not carry the metric being compared."""
 
 
-def _read_metric(report: Dict[str, Any], metric: str, label: str) -> float:
+def _read_metric(report: dict[str, Any], metric: str, label: str) -> float:
     if metric not in report:
         available = sorted(k for k, v in report.items() if isinstance(v, (int, float)))
         raise MissingMetricError(
@@ -38,11 +38,11 @@ def _read_metric(report: Dict[str, Any], metric: str, label: str) -> float:
 
 
 def evaluate(
-    baseline: Dict[str, Any],
-    current: Dict[str, Any],
+    baseline: dict[str, Any],
+    current: dict[str, Any],
     metric: str = DEFAULT_METRIC,
     threshold: float = DEFAULT_THRESHOLD,
-) -> Tuple[bool, str]:
+) -> tuple[bool, str]:
     """Return ``(passed, message)`` without touching sys.exit or stdout."""
     if threshold < 0:
         raise ValueError(f"threshold must be >= 0, got {threshold}")

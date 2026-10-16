@@ -1,0 +1,13 @@
+# Pinned runtime + tool versions. Install with:
+#   pip install torch --index-url https://download.pytorch.org/whl/cpu
+#   pip install -r requirements.txt
+# torch is intentionally unpinned here: local machines use their own
+# build (CUDA/Metal), CI installs the CPU build from the line above.
+numpy==2.5.2
+scikit-learn==1.9.0
+sentence-transformers==6.0.1
+openai==2.54.0
+google-genai==1.75.0
+pytest==9.1.1
+ruff==0.16.6
+mypy==2.3.1

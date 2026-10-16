@@ -4,7 +4,7 @@ The 'Groundtruth' project ensures the reliability of AI retrieval systems throug
 
 ## Run
 ```bash
-python3 -m pytest tests/ -q                          # test suite (82 tests)
+python3 -m pytest tests/ -q                          # test suite (94 tests)
 python3 -m evals.runner                              # retrieval matrix -> evals/reports/latest.json
 python3 -m evals.runner --retrievers tfidf --headline tfidf:lexical   # single lane
 python3 -m evals.runner --mode qa                    # exact-match QA scoring (stub lookup)
@@ -33,6 +33,21 @@ The 0.30 gap on paraphrase queries is the point: TF-IDF scores what it cannot ma
 
 ## Tradeoff
 The gate threshold was set to a 0.05 tolerance to balance strict quality control with the reality of stochastic retrieval. We accept minor variance in semantic matches while blocking breaking changes in critical business logic queries.
+
+## Production Runbook
+
+**Paid/quota-limited runs.** Every answer is checkpointed to `<out>.checkpoint.json` as it lands; a run killed by quota, Ctrl-C or crash resumes with the same command instead of re-spending calls. Scope and cap spend explicitly:
+```bash
+python3 -m evals.runner --mode qa --predictor gemini --limit 20 --out evals/reports/gemini.json
+python3 -m evals.runner --mode qa --predictor real --max-calls 50 --max-cost-usd 1.00 --out evals/reports/openai.json
+```
+`--limit` scopes to the first N items, `--max-calls` caps new API calls, `--max-cost-usd` stops before projected spend exceeds the cap (priced models only — unknown model prices fail closed rather than guess). Reports carry per-run `usage` (tokens, calls) and `estimated_cost_usd`.
+
+**Secrets.** API keys come from the environment only (`OPENAI_API_KEY`, `GEMINI_API_KEY`) — never flags, never files. A test asserts no key value lands in reports or checkpoints. Rotate any key that touched chat, logs or screenshots.
+
+**Provenance.** Every report carries a `run` block: `run_id`, `started_at`/`finished_at` (UTC), `git_sha`, `python`, plus the full invocation config (mode, retrievers/headline or predictor/model/limit/guards, resume state). A number without its `run` block is not a result.
+
+**Reproducible env.** `requirements.txt` pins every dependency (`pip install -r requirements.txt`; torch separately, CPU build in CI). CI enforces `ruff check`, `mypy`, the full suite, both retrieval gates and a stub QA smoke run.
 
 ## Honest Failure Notes
 

@@ -9,7 +9,8 @@ module never loads torch, and the encoder is injectable so tests can run
 without downloading a model.
 """
 
-from typing import Any, Callable, Dict, List, NamedTuple
+from collections.abc import Callable
+from typing import Any, NamedTuple
 
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -28,7 +29,7 @@ class TfidfRetriever:
     # drops single-digit tokens ("2 + 2" -> empty query vector).
     TOKEN_PATTERN = r"(?u)\b\w+\b"
 
-    def __init__(self, documents: List[Dict[str, Any]]):
+    def __init__(self, documents: list[dict[str, Any]]):
         ids = [doc["id"] for doc in documents]
         if len(set(ids)) != len(ids):
             raise ValueError("document ids must be unique")
@@ -41,7 +42,7 @@ class TfidfRetriever:
             self._vectorizer.fit_transform(self._texts) if self._texts else None
         )
 
-    def search(self, query: str, k: int = 5) -> List[Hit]:
+    def search(self, query: str, k: int = 5) -> list[Hit]:
         """Return up to ``k`` hits, best first, excluding zero-score docs."""
         if k < 1:
             raise ValueError(f"k must be >= 1, got {k}")
@@ -73,8 +74,8 @@ class DenseRetriever:
 
     def __init__(
         self,
-        documents: List[Dict[str, Any]],
-        encoder: Callable[[List[str]], np.ndarray] | None = None,
+        documents: list[dict[str, Any]],
+        encoder: Callable[[list[str]], np.ndarray] | None = None,
     ):
         ids = [doc["id"] for doc in documents]
         if len(set(ids)) != len(ids):
@@ -94,7 +95,7 @@ class DenseRetriever:
             )
         self._matrix = _row_normalize(vectors)
 
-    def search(self, query: str, k: int = 5) -> List[Hit]:
+    def search(self, query: str, k: int = 5) -> list[Hit]:
         """Return the top ``k`` hits by cosine similarity, best first."""
         if k < 1:
             raise ValueError(f"k must be >= 1, got {k}")
@@ -120,7 +121,7 @@ def _row_normalize(matrix: np.ndarray) -> np.ndarray:
 _MODEL: Any = None
 
 
-def _default_encoder(texts: List[str]) -> np.ndarray:
+def _default_encoder(texts: list[str]) -> np.ndarray:
     """Encode with the sentence-transformers model, loaded once per process."""
     global _MODEL
     if _MODEL is None:

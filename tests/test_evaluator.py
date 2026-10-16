@@ -1,5 +1,5 @@
-import pytest
-from src.evaluator import evaluate_retrieval, evaluate_faithfulness
+from src.evaluator import evaluate_faithfulness, evaluate_retrieval
+
 
 def test_recall_at_k():
     retrieved = ["a", "b", "c"]

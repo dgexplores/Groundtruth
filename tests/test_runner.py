@@ -2,6 +2,7 @@ import json
 import sys
 from pathlib import Path
 from types import SimpleNamespace
+from typing import ClassVar
 
 import pytest
 
@@ -10,11 +11,14 @@ from evals.runner import (
     DEFAULT_DATASET,
     STUB_MODEL_ID,
     build_report,
+    build_run_manifest,
+    checkpoint_path_for,
     gemini_llm_predict,
     load_data,
     normalize_answer,
     real_llm_predict,
     run_evaluation,
+    run_qa_session,
 )
 
 
@@ -40,7 +44,7 @@ def test_load_data_rejects_non_list():
     with tempfile.TemporaryDirectory() as tmp:
         bad = Path(tmp) / "bad.json"
         bad.write_text(json.dumps({"input": "not a list"}))
-        with pytest.raises(ValueError):
+        with pytest.raises(TypeError):
             load_data(bad)
 
 
@@ -219,11 +223,12 @@ class _FakeCompletions:
     def create(self, **kwargs):
         self.client.kwargs = kwargs
         message = SimpleNamespace(content=self.client.answer)
-        return SimpleNamespace(choices=[SimpleNamespace(message=message)])
+        usage = SimpleNamespace(prompt_tokens=10, completion_tokens=5)
+        return SimpleNamespace(choices=[SimpleNamespace(message=message)], usage=usage)
 
 
 class _FakeOpenAI:
-    instances = []
+    instances: ClassVar[list] = []
 
     def __init__(self, api_key=None):
         self.api_key = api_key
@@ -241,9 +246,10 @@ def fake_openai(monkeypatch):
 
 
 def test_real_predictor_calls_chat_completions(fake_openai):
-    answer = real_llm_predict("What is the capital of France?", model="gpt-4o-mini")
+    answer, usage = real_llm_predict("What is the capital of France?", model="gpt-4o-mini")
 
     assert answer == "Paris."
+    assert usage == {"prompt_tokens": 10, "completion_tokens": 5}
     client = fake_openai.instances[0]
     assert client.api_key == "test-key"
     assert client.kwargs["model"] == "gpt-4o-mini"
@@ -286,7 +292,7 @@ def test_main_qa_real_predictor_needs_a_key(tmp_path, monkeypatch):
 
 
 class _FakeGenaiModels:
-    failures_before_success = 0
+    failures_before_success: ClassVar[int] = 0
 
     def __init__(self, client):
         self.client = client
@@ -296,7 +302,8 @@ class _FakeGenaiModels:
             _FakeGenaiModels.failures_before_success -= 1
             raise _FakeServerError("transient")
         self.client.kwargs = kwargs
-        return SimpleNamespace(text=self.client.answer)
+        metadata = SimpleNamespace(prompt_token_count=7, candidates_token_count=3)
+        return SimpleNamespace(text=self.client.answer, usage_metadata=metadata)
 
 
 class _FakeServerError(Exception):
@@ -309,7 +316,7 @@ class _FakeClientError(Exception):
 
 
 class _FakeGenaiClient:
-    instances = []
+    instances: ClassVar[list] = []
 
     def __init__(self, api_key=None):
         self.api_key = api_key
@@ -338,9 +345,10 @@ def fake_genai(monkeypatch):
 
 
 def test_gemini_predictor_calls_generate_content(fake_genai):
-    answer = gemini_llm_predict("What is the capital of France?")
+    answer, usage = gemini_llm_predict("What is the capital of France?")
 
     assert answer == "Paris."
+    assert usage == {"prompt_tokens": 7, "completion_tokens": 3}
     client = fake_genai.instances[0]
     assert client.api_key == "test-key"
     assert client.kwargs["model"] == "gemini-2.5-flash"
@@ -361,7 +369,10 @@ def test_gemini_predictor_retries_transient_server_errors(fake_genai, monkeypatc
     monkeypatch.setattr(time_module, "sleep", lambda seconds: None)
     _FakeGenaiModels.failures_before_success = 2
 
-    assert gemini_llm_predict("What is the capital of France?") == "Paris."
+    assert gemini_llm_predict("What is the capital of France?") == (
+        "Paris.",
+        {"prompt_tokens": 7, "completion_tokens": 3},
+    )
 
 
 def test_main_qa_gemini_predictor_labels_the_model(tmp_path, fake_genai):
@@ -387,3 +398,196 @@ def test_main_qa_gemini_predictor_needs_a_key(tmp_path, monkeypatch):
         runner_module.main(
             ["--mode", "qa", "--predictor", "gemini", "--out", str(tmp_path / "x.json")]
         )
+
+
+SMALL_DATA = [
+    {"input": "q1", "expected_output": "a1"},
+    {"input": "q2", "expected_output": "a2"},
+    {"input": "q3", "expected_output": "a3"},
+]
+
+
+def counting_predict(answers, usage=None):
+    calls = []
+
+    def predict(text):
+        calls.append(text)
+        if usage is None:
+            return answers.get(text, "Unknown")
+        return answers.get(text, "Unknown"), usage
+
+    predict.calls = calls
+    return predict
+
+
+def test_qa_session_full_run_leaves_no_checkpoint(tmp_path):
+    out = tmp_path / "r.json"
+    predict = counting_predict({"q1": "a1", "q2": "a2", "q3": "a3"})
+
+    report = run_qa_session(SMALL_DATA, predict, out, STUB_MODEL_ID)
+
+    assert report["completed"] is True
+    assert report["stop_reason"] is None
+    assert report["exact_match"] == 1.0
+    assert len(predict.calls) == 3
+    assert not checkpoint_path_for(out).exists()
+
+
+def test_qa_session_resumes_after_interruption(tmp_path):
+    out = tmp_path / "r.json"
+    predict = counting_predict({"q1": "a1", "q2": "a2", "q3": "a3"})
+
+    partial = run_qa_session(
+        SMALL_DATA, predict, out, STUB_MODEL_ID, max_calls=2
+    )
+    assert partial["completed"] is False
+    assert partial["stop_reason"] == "max-calls"
+    assert checkpoint_path_for(out).exists()
+
+    resumed = run_qa_session(SMALL_DATA, predict, out, STUB_MODEL_ID)
+
+    assert resumed["completed"] is True
+    assert resumed["run"]["resumed"] is True
+    assert resumed["run"]["new_calls"] == 1
+    assert len(predict.calls) == 3
+    assert resumed["exact_match"] == 1.0
+    assert not checkpoint_path_for(out).exists()
+
+
+def test_qa_session_ignores_checkpoint_from_another_model(tmp_path):
+    out = tmp_path / "r.json"
+    checkpoint_path_for(out).write_text(
+        json.dumps({"model": "other-model", "rows": {"q1": {}}})
+    )
+    predict = counting_predict({"q1": "a1"})
+
+    report = run_qa_session(
+        SMALL_DATA[:1], predict, out, STUB_MODEL_ID, predictor="stub"
+    )
+
+    assert report["run"]["resumed"] is False
+    assert len(predict.calls) == 1
+
+
+def test_qa_session_ignores_corrupt_checkpoint(tmp_path):
+    out = tmp_path / "r.json"
+    checkpoint_path_for(out).write_text("not json{")
+    predict = counting_predict({"q1": "a1"})
+
+    report = run_qa_session(SMALL_DATA[:1], predict, out, STUB_MODEL_ID)
+
+    assert report["completed"] is True
+    assert len(predict.calls) == 1
+
+
+def test_qa_session_limit_scopes_items(tmp_path):
+    predict = counting_predict({"q1": "a1", "q2": "a2", "q3": "a3"})
+
+    report = run_qa_session(
+        SMALL_DATA, predict, tmp_path / "r.json", STUB_MODEL_ID, limit=2
+    )
+
+    assert report["total"] == 2
+    assert len(predict.calls) == 2
+
+
+def test_qa_session_reports_usage_and_cost(tmp_path):
+    usage = {"prompt_tokens": 1000, "completion_tokens": 500}
+    predict = counting_predict({"q1": "a1"}, usage=usage)
+
+    report = run_qa_session(
+        SMALL_DATA[:1], predict, tmp_path / "r.json", "gpt-4o-mini"
+    )
+
+    assert report["usage"] == {
+        "prompt_tokens": 1000,
+        "completion_tokens": 500,
+        "api_calls": 1,
+    }
+    assert report["estimated_cost_usd"] == pytest.approx(0.00045)
+
+
+def test_qa_session_max_cost_stops_the_run(tmp_path):
+    usage = {"prompt_tokens": 1_000_000, "completion_tokens": 0}
+    predict = counting_predict({"q1": "a1", "q2": "a2", "q3": "a3"}, usage=usage)
+
+    report = run_qa_session(
+        SMALL_DATA,
+        predict,
+        tmp_path / "r.json",
+        "gpt-4o-mini",
+        max_cost_usd=0.20,
+    )
+
+    assert report["completed"] is False
+    assert report["stop_reason"] == "max-cost"
+    assert len(predict.calls) == 1
+
+
+def test_qa_session_max_cost_fails_closed_on_unknown_price(tmp_path):
+    predict = counting_predict({"q1": "a1"})
+
+    with pytest.raises(ValueError, match="no price"):
+        run_qa_session(
+            SMALL_DATA[:1],
+            predict,
+            tmp_path / "r.json",
+            "some-future-model",
+            max_cost_usd=1.0,
+        )
+
+
+def test_run_manifest_carries_provenance():
+    manifest = build_run_manifest({"mode": "qa"}, "2026-10-16T00:00:00+00:00")
+
+    assert manifest["mode"] == "qa"
+    assert manifest["started_at"] == "2026-10-16T00:00:00+00:00"
+    assert len(manifest["run_id"]) == 12
+    assert isinstance(manifest["git_sha"], str) and manifest["git_sha"]
+    assert manifest["finished_at"] >= manifest["started_at"]
+
+
+def test_retrieval_report_carries_run_manifest(tmp_path):
+    out = tmp_path / "r.json"
+
+    runner_module.main(
+        ["--out", str(out), "--retrievers", "tfidf", "--headline", "tfidf:lexical"]
+    )
+    report = json.loads(out.read_text())
+
+    assert report["run"]["mode"] == "retrieval"
+    assert report["run"]["headline"] == "tfidf:lexical"
+    assert len(report["run"]["run_id"]) == 12
+
+
+def test_main_qa_validates_guard_flags(tmp_path):
+    for flag in (["--limit", "0"], ["--max-calls", "0"], ["--max-cost-usd", "-1"]):
+        with pytest.raises(SystemExit):
+            runner_module.main(
+                ["--mode", "qa", "--out", str(tmp_path / "x.json"), *flag]
+            )
+
+
+def test_no_secret_leaks_into_artifacts(tmp_path, fake_openai, monkeypatch):
+    secret = "sk-proj-SECRET-UNDER-TEST"
+    monkeypatch.setenv("OPENAI_API_KEY", secret)
+    out = tmp_path / "r.json"
+
+    runner_module.main(
+        [
+            "--mode",
+            "qa",
+            "--predictor",
+            "real",
+            "--out",
+            str(out),
+            "--limit",
+            "3",
+            "--max-calls",
+            "1",
+        ]
+    )
+
+    assert checkpoint_path_for(out).exists()
+    for path in (out, checkpoint_path_for(out)):
+        assert secret not in path.read_text()

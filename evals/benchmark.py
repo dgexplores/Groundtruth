@@ -12,8 +12,9 @@ appears as ``recall_at_<k>``, every cell also as
 
 import argparse
 import json
+from collections.abc import Callable, Sequence
 from pathlib import Path
-from typing import Any, Callable, Dict, List, Tuple
+from typing import Any
 
 from src.evaluator import evaluate_retrieval
 from src.retriever import DenseRetriever, TfidfRetriever
@@ -22,14 +23,14 @@ DEFAULT_CORPUS = Path(__file__).resolve().parent / "corpus.json"
 DEFAULT_REPORT = Path(__file__).resolve().parent / "reports" / "latest.json"
 K_VALUES = (5, 10)
 PRIMARY_METRIC = "recall_at_10"
-DEFAULT_RETRIEVERS: Dict[str, Callable[[List[Dict[str, Any]]], Any]] = {
+DEFAULT_RETRIEVERS: dict[str, Callable[[list[dict[str, Any]]], Any]] = {
     "tfidf": TfidfRetriever,
     "dense": DenseRetriever,
 }
 DEFAULT_HEADLINE = ("dense", "semantic")
 
 
-def load_corpus(path: Path) -> Dict[str, Any]:
+def load_corpus(path: Path) -> dict[str, Any]:
     """Load and validate a corpus file.
 
     Preconditions: the file is JSON with ``documents`` (each with
@@ -53,10 +54,10 @@ def load_corpus(path: Path) -> Dict[str, Any]:
 
 
 def run_benchmark(
-    corpus: Dict[str, Any],
-    retriever_factory: Callable[[List[Dict[str, Any]]], Any] = TfidfRetriever,
-    k_values: List[int] = K_VALUES,
-) -> Dict[str, Any]:
+    corpus: dict[str, Any],
+    retriever_factory: Callable[[list[dict[str, Any]]], Any] = TfidfRetriever,
+    k_values: Sequence[int] = K_VALUES,
+) -> dict[str, Any]:
     """Evaluate a retriever over a corpus.
 
     Returns a report with one ``recall_at_<k>`` metric per k value,
@@ -66,7 +67,7 @@ def run_benchmark(
     retriever = retriever_factory(corpus["documents"])
     per_query = []
     for query in corpus["queries"]:
-        row: Dict[str, Any] = {
+        row: dict[str, Any] = {
             "id": query.get("id", ""),
             "query": query["text"],
         }
@@ -93,11 +94,11 @@ def run_benchmark(
 
 
 def run_matrix(
-    corpus: Dict[str, Any],
-    retrievers: Dict[str, Callable[[List[Dict[str, Any]]], Any]] | None = None,
-    k_values: List[int] = K_VALUES,
-    headline: Tuple[str, str] | None = None,
-) -> Dict[str, Any]:
+    corpus: dict[str, Any],
+    retrievers: dict[str, Callable[[list[dict[str, Any]]], Any]] | None = None,
+    k_values: Sequence[int] = K_VALUES,
+    headline: tuple[str, str] | None = None,
+) -> dict[str, Any]:
     """Run every retriever against every query tier.
 
     Returns a flat report: per-cell ``<retriever>_<tier>_recall_at_<k>``
@@ -117,7 +118,7 @@ def run_matrix(
     if not tiers:
         raise ValueError("need at least one query")
 
-    cells: Dict[str, Dict[str, Any]] = {}
+    cells: dict[str, dict[str, Any]] = {}
     for alias, factory in retrievers.items():
         for tier in tiers:
             subset = {
@@ -143,7 +144,7 @@ def run_matrix(
         )
     headline_cell = cells[headline_alias][headline_tier]
 
-    report: Dict[str, Any] = {
+    report: dict[str, Any] = {
         "metric": PRIMARY_METRIC,
         "retrievers": {
             alias: factory.__name__ for alias, factory in retrievers.items()
@@ -164,7 +165,7 @@ def run_matrix(
     return report
 
 
-def main(argv: List[str] | None = None) -> int:
+def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--corpus", type=Path, default=DEFAULT_CORPUS)
     parser.add_argument("--out", type=Path, default=DEFAULT_REPORT)
