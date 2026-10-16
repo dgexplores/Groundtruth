@@ -2,6 +2,8 @@
 
 The 'Groundtruth' project ensures the reliability of AI retrieval systems through rigorous evaluation against a managed golden dataset.
 
+**Live dashboard:** https://dgexplores.github.io/Groundtruth/dashboard/
+
 ## Run
 ```bash
 python3 -m pytest tests/ -q                          # test suite (94 tests)
@@ -55,6 +57,7 @@ Interactive benchmark view — headline metric, retriever × tier matrix with pe
 ```bash
 python3 -m http.server   # serve the repo root, open /dashboard/
 ```
+Hosted copy refreshes from `dashboard/data/` — after a new benchmark run, re-copy `evals/reports/latest.json` and `evals/baseline_report.json` there and push.
 
 ## Honest Failure Notes
 
