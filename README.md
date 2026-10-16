@@ -49,6 +49,13 @@ python3 -m evals.runner --mode qa --predictor real --max-calls 50 --max-cost-usd
 
 **Reproducible env.** `requirements.txt` pins every dependency (`pip install -r requirements.txt`; torch separately, CPU build in CI). CI enforces `ruff check`, `mypy`, the full suite, both retrieval gates and a stub QA smoke run.
 
+## Dashboard
+
+Interactive benchmark view — headline metric, retriever × tier matrix with per-query misses, draggable TF-IDF-vs-dense wipe, gate status, run provenance. No build step, no dependencies, springs hand-rolled per Apple's fluid-interface rules (critically damped by default, velocity carried through interrupts, `prefers-reduced-motion` respected):
+```bash
+python3 -m http.server   # serve the repo root, open /dashboard/
+```
+
 ## Honest Failure Notes
 
 - **Lexical 1.00 measures the harness, not retrieval strength.** The lexical tier was authored so each answer appears in a natural sentence overlapping its query — a lexical retriever should pass it. That number verifies indexing, ranking, scoring and gating work end to end; the paraphrase tier is where retriever quality actually separates. Drop a real corpus into `evals/corpus.json` (documents + queries with `relevant_ids` and `tier`) to get a meaningful score.

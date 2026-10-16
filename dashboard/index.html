@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="system">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Groundtruth — Retrieval Benchmark</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="toolbar" id="toolbar">
+  <div class="toolbar-inner">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span class="brand-name">Groundtruth</span>
+      <span class="brand-sub" id="corpusMeta">retrieval benchmark</span>
+    </div>
+    <div class="theme-toggle" role="group" aria-label="Theme">
+      <button data-theme-value="system" aria-pressed="true">System</button>
+      <button data-theme-value="light" aria-pressed="false">Light</button>
+      <button data-theme-value="dark" aria-pressed="false">Dark</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="hero" aria-label="Headline metric">
+    <p class="eyebrow" id="headlineLabel">headline</p>
+    <p class="hero-value"><span id="headlineValue">–</span><span class="hero-unit">recall@10</span></p>
+    <p class="hero-sub"><span id="headlineR5">recall@5 –</span><span class="pill" id="headlinePill">–</span></p>
+  </section>
+
+  <section aria-label="Retriever matrix">
+    <h2 class="section-title">Matrix <span class="section-hint">retriever × query tier</span></h2>
+    <div class="cards" id="cards"></div>
+  </section>
+
+  <section aria-label="Head-to-head comparison">
+    <h2 class="section-title">Paraphrases decide <span class="section-hint">drag the handle</span></h2>
+    <div class="compare" id="compare">
+      <div class="compare-track">
+        <div class="compare-lane lane-a">
+          <span class="lane-name">TF-IDF</span>
+          <span class="lane-value" id="laneAValue">–</span>
+        </div>
+        <div class="compare-lane lane-b">
+          <span class="lane-name">Dense</span>
+          <span class="lane-value" id="laneBValue">–</span>
+        </div>
+        <div class="compare-handle" id="compareHandle" role="slider"
+             aria-label="Comparison split" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" tabindex="0">
+          <span></span>
+        </div>
+      </div>
+      <p class="compare-caption" id="compareCaption">recall@10 on paraphrase queries</p>
+    </div>
+  </section>
+
+  <section aria-label="Regression gates">
+    <h2 class="section-title">Gates <span class="section-hint">baseline − 0.05 tolerance</span></h2>
+    <div class="gates" id="gates"></div>
+  </section>
+
+  <footer class="provenance" id="provenance"></footer>
+</main>
+
+<div class="load-error" id="loadError" hidden>
+  <p>Couldn't load the benchmark report.</p>
+  <p>Serve the repo root locally, then open this page:<br>
+  <code>python3 -m http.server</code> → <code>/dashboard/</code></p>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

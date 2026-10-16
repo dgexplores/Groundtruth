@@ -31,6 +31,9 @@ jobs:
       - name: Typecheck
         run: mypy src evals
 
+      - name: Dashboard syntax check
+        run: node --check dashboard/app.js
+
       - name: Run tests
         run: python -m pytest tests/ -q
 
