@@ -413,7 +413,7 @@
 
   /* ---------- boot ---------- */
 
-  Promise.allSettled([loadJSON("../evals/reports/latest.json"), loadJSON("../evals/baseline_report.json")])
+  Promise.allSettled([loadJSON("data/latest.json"), loadJSON("data/baseline.json")])
     .then(([latest, baseline]) => {
       if (latest.status !== "fulfilled") {
         document.getElementById("loadError").hidden = false;
