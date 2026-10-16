@@ -45,7 +45,7 @@ QA_API_KEY_ENV = "OPENAI_API_KEY"
 QA_MODEL_ENV = "QA_MODEL"
 DEFAULT_QA_MODEL = "gpt-4o-mini"
 GEMINI_API_KEY_ENV = "GEMINI_API_KEY"
-DEFAULT_GEMINI_MODEL = "gemini-2.5-flash"
+DEFAULT_GEMINI_MODEL = "gemini-3.5-flash-lite"
 QA_SYSTEM_PROMPT = "Answer the question briefly. Reply with the answer only, no explanation."
 
 STUB_MODEL_ID = "stub:not-a-real-model"

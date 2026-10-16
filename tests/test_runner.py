@@ -351,7 +351,7 @@ def test_gemini_predictor_calls_generate_content(fake_genai):
     assert usage == {"prompt_tokens": 7, "completion_tokens": 3}
     client = fake_genai.instances[0]
     assert client.api_key == "test-key"
-    assert client.kwargs["model"] == "gemini-2.5-flash"
+    assert client.kwargs["model"] == "gemini-3.5-flash-lite"
     assert client.kwargs["contents"] == "What is the capital of France?"
     assert client.kwargs["config"]["temperature"] == 0
 
@@ -386,7 +386,7 @@ def test_main_qa_gemini_predictor_labels_the_model(tmp_path, fake_genai):
     )
     report = json.loads(out.read_text())
 
-    assert report["model"] == "gemini-2.5-flash"
+    assert report["model"] == "gemini-3.5-flash-lite"
     assert report["metric"] == "exact_match"
     assert report["total"] == len(load_data(DEFAULT_DATASET))
 
