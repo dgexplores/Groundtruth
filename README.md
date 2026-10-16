@@ -4,10 +4,11 @@ The 'Groundtruth' project ensures the reliability of AI retrieval systems throug
 
 ## Run
 ```bash
-python3 -m pytest tests/ -q                          # test suite (70 tests)
+python3 -m pytest tests/ -q                          # test suite (77 tests)
 python3 -m evals.runner                              # retrieval matrix -> evals/reports/latest.json
 python3 -m evals.runner --retrievers tfidf --headline tfidf:lexical   # single lane
-python3 -m evals.runner --mode qa                    # exact-match QA scoring (stub model)
+python3 -m evals.runner --mode qa                    # exact-match QA scoring (stub lookup)
+OPENAI_API_KEY=... python3 -m evals.runner --mode qa --predictor real  # real model (default gpt-4o-mini, override with QA_MODEL)
 python3 -m evals.regression_gate evals/baseline_report.json evals/reports/latest.json --metric recall_at_10
 python3 -m evals.regression_gate evals/baseline_report.json evals/reports/latest.json --metric tfidf_semantic_recall_at_10
 ```
@@ -40,5 +41,5 @@ The gate threshold was set to a 0.05 tolerance to balance strict quality control
 - **Paraphrases are natural phrasing, not adversarial strings.** They were authored to read like a real user asking without content-word overlap with the answer, not tuned to force TF-IDF's number down. Whatever it measures is reported as-is.
 - **Dense 1.00 at recall@10 is a 50-doc ceiling effect.** With only 50 documents and one relevant doc, recall@10 can barely fail (random baseline ≈ 0.20). The recall@5 column is the more discriminating number (0.98 dense vs 0.70 TF-IDF).
 - **Bug the benchmark caught:** scikit-learn's default `token_pattern` drops single-character tokens, so the query `2 + 2` produced an empty vector and scored 0. Fixed via `TfidfRetriever.TOKEN_PATTERN` with a regression test in `tests/test_retriever.py`.
-- **QA mode's 0.10 is a stub, not a model.** `simulate_llm` is a fixed lookup table; every report from that mode is labelled `stub:not-a-real-model`.
+- **QA mode's 0.10 is a stub, not a model.** `simulate_llm` is a fixed lookup table; every report from that mode is labelled `stub:not-a-real-model`. Pass `--predictor real` with `OPENAI_API_KEY` set to score a real model instead (report carries the model name, e.g. `gpt-4o-mini`). Both sides are SQuAD-normalized (lowercase, no punctuation/articles) before exact-match, so `paris.` counts — long-form answers still mostly miss, which is the honest harshness of exact-match on sentences.
 - **Model is cached in CI** (`actions/cache` on `~/.cache/huggingface`); first cold run downloads `all-MiniLM-L6-v2` (~90 MB).

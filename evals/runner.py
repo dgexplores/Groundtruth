@@ -4,7 +4,9 @@ Two modes:
   retrieval (default) runs the Recall@K benchmark over evals/corpus.json,
     one cell per retriever (--retrievers) and query tier, with the
     headline cell also reported as top-level recall_at_5 / recall_at_10
-  qa scores exact-match answers against evals/golden_dataset.json
+  qa scores exact-match answers against evals/golden_dataset.json, using
+    the stub lookup by default or a real model with --predictor real
+    (needs OPENAI_API_KEY; model from QA_MODEL, default gpt-4o-mini)
 
 Reports are the input contract for ``evals.regression_gate``. The qa
 mode reports ``exact_match``; the retrieval mode reports
@@ -15,6 +17,8 @@ retrieved set.
 
 import argparse
 import json
+import os
+import re
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Tuple
 
@@ -29,6 +33,11 @@ DEFAULT_DATASET = Path(__file__).resolve().parent / "golden_dataset.json"
 DEFAULT_REPORT_DIR = Path(__file__).resolve().parent / "reports"
 DEFAULT_RETRIEVER_NAMES = "tfidf,dense"
 DEFAULT_HEADLINE_CELL = "dense:semantic"
+
+QA_API_KEY_ENV = "OPENAI_API_KEY"
+QA_MODEL_ENV = "QA_MODEL"
+DEFAULT_QA_MODEL = "gpt-4o-mini"
+QA_SYSTEM_PROMPT = "Answer the question briefly. Reply with the answer only, no explanation."
 
 STUB_MODEL_ID = "stub:not-a-real-model"
 
@@ -63,6 +72,48 @@ def simulate_llm(input_text: str) -> str:
     return "Unknown"
 
 
+def normalize_answer(text: str) -> str:
+    """SQuAD-style normalization so trivial surface differences don't fail.
+
+    Lowercase, drop punctuation and the articles a/an/the, collapse
+    whitespace. Applied to both sides before exact-match comparison.
+    """
+    text = text.lower()
+    text = re.sub(r"[^a-z0-9 ]", " ", text)
+    text = re.sub(r"\b(a|an|the)\b", " ", text)
+    return " ".join(text.split())
+
+
+def real_llm_predict(
+    input_text: str, model: str = DEFAULT_QA_MODEL, api_key: str | None = None
+) -> str:
+    """Answer with the chat-completions API. Key from OPENAI_API_KEY.
+
+    The openai import is lazy so the module stays importable without the
+    dependency (CI runs the stub). Raises ValueError when no key is set.
+    """
+    key = api_key or os.environ.get(QA_API_KEY_ENV)
+    if not key:
+        raise ValueError(
+            f"real predictor needs {QA_API_KEY_ENV} in the environment"
+        )
+    from openai import OpenAI
+
+    client = OpenAI(api_key=key)
+    response = client.chat.completions.create(
+        model=model,
+        messages=[
+            {"role": "system", "content": QA_SYSTEM_PROMPT},
+            {"role": "user", "content": input_text},
+        ],
+        temperature=0,
+        max_completion_tokens=256,
+        timeout=30,
+    )
+    content = response.choices[0].message.content
+    return content if content is not None else ""
+
+
 def run_evaluation(
     data: List[Dict[str, Any]], predict: Callable[[str], str] = simulate_llm
 ) -> List[Dict[str, Any]]:
@@ -76,18 +127,20 @@ def run_evaluation(
                 "input": input_text,
                 "expected": expected,
                 "actual": actual,
-                "match": actual.strip() == expected.strip(),
+                "match": normalize_answer(actual) == normalize_answer(expected),
             }
         )
     return results
 
 
-def build_report(results: List[Dict[str, Any]]) -> Dict[str, Any]:
+def build_report(
+    results: List[Dict[str, Any]], model: str = STUB_MODEL_ID
+) -> Dict[str, Any]:
     """Summarise per-item QA results into the gate's input contract."""
     total = len(results)
     matched = sum(1 for r in results if r["match"])
     return {
-        "model": STUB_MODEL_ID,
+        "model": model,
         "metric": "exact_match",
         "exact_match": matched / total if total else 0.0,
         "matched": matched,
@@ -118,6 +171,13 @@ def main(argv: List[str] | None = None) -> int:
         help="retriever:tier cell reported as top-level recall_at_k "
         "(default: %(default)s)",
     )
+    parser.add_argument(
+        "--predictor",
+        choices=("stub", "real"),
+        default="stub",
+        help="qa mode only: stub lookup table (default) or a real model "
+        f"(needs {QA_API_KEY_ENV})",
+    )
     args = parser.parse_args(argv)
 
     if args.mode == "retrieval":
@@ -144,7 +204,19 @@ def main(argv: List[str] | None = None) -> int:
     else:
         if not args.dataset.exists():
             parser.error(f"dataset not found: {args.dataset}")
-        report = build_report(run_evaluation(load_data(args.dataset)))
+        if args.predictor == "real":
+            if not os.environ.get(QA_API_KEY_ENV):
+                parser.error(f"--predictor real needs {QA_API_KEY_ENV} in the environment")
+            model_id = os.environ.get(QA_MODEL_ENV, DEFAULT_QA_MODEL)
+            predict: Callable[[str], str] = lambda text: real_llm_predict(
+                text, model=model_id
+            )
+        else:
+            model_id = STUB_MODEL_ID
+            predict = simulate_llm
+        report = build_report(
+            run_evaluation(load_data(args.dataset), predict=predict), model=model_id
+        )
 
     args.out.parent.mkdir(parents=True, exist_ok=True)
     with open(args.out, "w", encoding="utf-8") as handle:

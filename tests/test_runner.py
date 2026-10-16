@@ -1,5 +1,7 @@
 import json
+import sys
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 
@@ -9,6 +11,8 @@ from evals.runner import (
     STUB_MODEL_ID,
     build_report,
     load_data,
+    normalize_answer,
+    real_llm_predict,
     run_evaluation,
 )
 
@@ -184,4 +188,97 @@ def test_main_rejects_headline_missing_from_matrix(tmp_path):
     with pytest.raises(ValueError, match="not in matrix"):
         runner_module.main(
             ["--out", str(out), "--retrievers", "tfidf", "--headline", "dense:semantic"]
+        )
+
+
+def test_normalize_answer_ignores_surface_differences():
+    assert normalize_answer("  Paris. ") == "paris"
+    assert normalize_answer("THE Capital of France") == "capital of france"
+    assert normalize_answer("an  apple") == "apple"
+
+
+def test_run_evaluation_matches_after_normalization():
+    data = [{"input": "q", "expected_output": "Paris"}]
+
+    results = run_evaluation(data, predict=lambda _: "paris.")
+
+    assert results[0]["match"] is True
+
+
+def test_build_report_records_the_model():
+    report = build_report([], model="gpt-4o-mini")
+
+    assert report["model"] == "gpt-4o-mini"
+
+
+class _FakeCompletions:
+    def __init__(self, client):
+        self.client = client
+
+    def create(self, **kwargs):
+        self.client.kwargs = kwargs
+        message = SimpleNamespace(content=self.client.answer)
+        return SimpleNamespace(choices=[SimpleNamespace(message=message)])
+
+
+class _FakeOpenAI:
+    instances = []
+
+    def __init__(self, api_key=None):
+        self.api_key = api_key
+        self.answer = "Paris."
+        self.chat = SimpleNamespace(completions=_FakeCompletions(self))
+        _FakeOpenAI.instances.append(self)
+
+
+@pytest.fixture
+def fake_openai(monkeypatch):
+    _FakeOpenAI.instances.clear()
+    monkeypatch.setitem(sys.modules, "openai", SimpleNamespace(OpenAI=_FakeOpenAI))
+    monkeypatch.setenv("OPENAI_API_KEY", "test-key")
+    return _FakeOpenAI
+
+
+def test_real_predictor_calls_chat_completions(fake_openai):
+    answer = real_llm_predict("What is the capital of France?", model="gpt-4o-mini")
+
+    assert answer == "Paris."
+    client = fake_openai.instances[0]
+    assert client.api_key == "test-key"
+    assert client.kwargs["model"] == "gpt-4o-mini"
+    assert client.kwargs["temperature"] == 0
+    roles = [message["role"] for message in client.kwargs["messages"]]
+    assert roles == ["system", "user"]
+
+
+def test_real_predictor_needs_a_key(monkeypatch):
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+
+    with pytest.raises(ValueError, match="OPENAI_API_KEY"):
+        real_llm_predict("anything")
+
+
+def test_main_qa_real_predictor_labels_the_model(tmp_path, fake_openai, monkeypatch):
+    out = tmp_path / "r.json"
+    monkeypatch.setenv("QA_MODEL", "gpt-4o-mini")
+
+    assert (
+        runner_module.main(
+            ["--mode", "qa", "--predictor", "real", "--out", str(out)]
+        )
+        == 0
+    )
+    report = json.loads(out.read_text())
+
+    assert report["model"] == "gpt-4o-mini"
+    assert report["metric"] == "exact_match"
+    assert report["total"] == len(load_data(DEFAULT_DATASET))
+
+
+def test_main_qa_real_predictor_needs_a_key(tmp_path, monkeypatch):
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+
+    with pytest.raises(SystemExit):
+        runner_module.main(
+            ["--mode", "qa", "--predictor", "real", "--out", str(tmp_path / "x.json")]
         )
