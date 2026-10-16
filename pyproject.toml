@@ -12,6 +12,7 @@ numpy = "^1.26.0"
 scikit-learn = "^1.4.0"
 sentence-transformers = "^6.0"
 openai = "^2.0"
+google-genai = "^1.0"
 
 [build-system]
 requires = ["poetry-core"]

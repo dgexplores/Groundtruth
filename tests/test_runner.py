@@ -10,6 +10,7 @@ from evals.runner import (
     DEFAULT_DATASET,
     STUB_MODEL_ID,
     build_report,
+    gemini_llm_predict,
     load_data,
     normalize_answer,
     real_llm_predict,
@@ -281,4 +282,108 @@ def test_main_qa_real_predictor_needs_a_key(tmp_path, monkeypatch):
     with pytest.raises(SystemExit):
         runner_module.main(
             ["--mode", "qa", "--predictor", "real", "--out", str(tmp_path / "x.json")]
+        )
+
+
+class _FakeGenaiModels:
+    failures_before_success = 0
+
+    def __init__(self, client):
+        self.client = client
+
+    def generate_content(self, **kwargs):
+        if _FakeGenaiModels.failures_before_success > 0:
+            _FakeGenaiModels.failures_before_success -= 1
+            raise _FakeServerError("transient")
+        self.client.kwargs = kwargs
+        return SimpleNamespace(text=self.client.answer)
+
+
+class _FakeServerError(Exception):
+    pass
+
+
+class _FakeClientError(Exception):
+    def __init__(self, code):
+        self.code = code
+
+
+class _FakeGenaiClient:
+    instances = []
+
+    def __init__(self, api_key=None):
+        self.api_key = api_key
+        self.answer = "Paris."
+        self.models = _FakeGenaiModels(self)
+        _FakeGenaiClient.instances.append(self)
+
+
+@pytest.fixture
+def fake_genai(monkeypatch):
+    _FakeGenaiClient.instances.clear()
+    _FakeGenaiModels.failures_before_success = 0
+    fake_genai_module = SimpleNamespace(
+        Client=_FakeGenaiClient,
+        types=SimpleNamespace(GenerateContentConfig=lambda **kwargs: kwargs),
+        errors=SimpleNamespace(
+            ServerError=_FakeServerError, ClientError=_FakeClientError
+        ),
+    )
+    monkeypatch.setitem(
+        sys.modules, "google", SimpleNamespace(genai=fake_genai_module)
+    )
+    monkeypatch.setitem(sys.modules, "google.genai", fake_genai_module)
+    monkeypatch.setenv("GEMINI_API_KEY", "test-key")
+    return _FakeGenaiClient
+
+
+def test_gemini_predictor_calls_generate_content(fake_genai):
+    answer = gemini_llm_predict("What is the capital of France?")
+
+    assert answer == "Paris."
+    client = fake_genai.instances[0]
+    assert client.api_key == "test-key"
+    assert client.kwargs["model"] == "gemini-2.5-flash"
+    assert client.kwargs["contents"] == "What is the capital of France?"
+    assert client.kwargs["config"]["temperature"] == 0
+
+
+def test_gemini_predictor_needs_a_key(monkeypatch):
+    monkeypatch.delenv("GEMINI_API_KEY", raising=False)
+
+    with pytest.raises(ValueError, match="GEMINI_API_KEY"):
+        gemini_llm_predict("anything")
+
+
+def test_gemini_predictor_retries_transient_server_errors(fake_genai, monkeypatch):
+    import time as time_module
+
+    monkeypatch.setattr(time_module, "sleep", lambda seconds: None)
+    _FakeGenaiModels.failures_before_success = 2
+
+    assert gemini_llm_predict("What is the capital of France?") == "Paris."
+
+
+def test_main_qa_gemini_predictor_labels_the_model(tmp_path, fake_genai):
+    out = tmp_path / "r.json"
+
+    assert (
+        runner_module.main(
+            ["--mode", "qa", "--predictor", "gemini", "--out", str(out)]
+        )
+        == 0
+    )
+    report = json.loads(out.read_text())
+
+    assert report["model"] == "gemini-2.5-flash"
+    assert report["metric"] == "exact_match"
+    assert report["total"] == len(load_data(DEFAULT_DATASET))
+
+
+def test_main_qa_gemini_predictor_needs_a_key(tmp_path, monkeypatch):
+    monkeypatch.delenv("GEMINI_API_KEY", raising=False)
+
+    with pytest.raises(SystemExit):
+        runner_module.main(
+            ["--mode", "qa", "--predictor", "gemini", "--out", str(tmp_path / "x.json")]
         )

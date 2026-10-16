@@ -5,8 +5,9 @@ Two modes:
     one cell per retriever (--retrievers) and query tier, with the
     headline cell also reported as top-level recall_at_5 / recall_at_10
   qa scores exact-match answers against evals/golden_dataset.json, using
-    the stub lookup by default or a real model with --predictor real
-    (needs OPENAI_API_KEY; model from QA_MODEL, default gpt-4o-mini)
+    the stub lookup by default, an OpenAI model with --predictor real
+    (needs OPENAI_API_KEY), or a Gemini model with --predictor gemini
+    (needs GEMINI_API_KEY; model from QA_MODEL, else a per-provider default)
 
 Reports are the input contract for ``evals.regression_gate``. The qa
 mode reports ``exact_match``; the retrieval mode reports
@@ -19,6 +20,7 @@ import argparse
 import json
 import os
 import re
+import time
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Tuple
 
@@ -37,6 +39,8 @@ DEFAULT_HEADLINE_CELL = "dense:semantic"
 QA_API_KEY_ENV = "OPENAI_API_KEY"
 QA_MODEL_ENV = "QA_MODEL"
 DEFAULT_QA_MODEL = "gpt-4o-mini"
+GEMINI_API_KEY_ENV = "GEMINI_API_KEY"
+DEFAULT_GEMINI_MODEL = "gemini-2.5-flash"
 QA_SYSTEM_PROMPT = "Answer the question briefly. Reply with the answer only, no explanation."
 
 STUB_MODEL_ID = "stub:not-a-real-model"
@@ -114,6 +118,47 @@ def real_llm_predict(
     return content if content is not None else ""
 
 
+def gemini_llm_predict(
+    input_text: str, model: str = DEFAULT_GEMINI_MODEL, api_key: str | None = None
+) -> str:
+    """Answer with the Gemini API. Key from GEMINI_API_KEY.
+
+    The google.genai import is lazy so the module stays importable
+    without the dependency. Raises ValueError when no key is set.
+    """
+    key = api_key or os.environ.get(GEMINI_API_KEY_ENV)
+    if not key:
+        raise ValueError(
+            f"gemini predictor needs {GEMINI_API_KEY_ENV} in the environment"
+        )
+    from google import genai
+    from google.genai import errors as genai_errors
+    from google.genai import types
+
+    client = genai.Client(api_key=key)
+    for attempt in range(4):
+        try:
+            response = client.models.generate_content(
+                model=model,
+                contents=input_text,
+                config=types.GenerateContentConfig(
+                    system_instruction=QA_SYSTEM_PROMPT,
+                    temperature=0,
+                    max_output_tokens=256,
+                ),
+            )
+            break
+        except genai_errors.ServerError:
+            if attempt == 3:
+                raise
+            time.sleep(2**attempt)
+        except genai_errors.ClientError as exc:
+            if exc.code != 429 or attempt == 3:
+                raise
+            time.sleep(10 * (attempt + 1))
+    return response.text if response.text is not None else ""
+
+
 def run_evaluation(
     data: List[Dict[str, Any]], predict: Callable[[str], str] = simulate_llm
 ) -> List[Dict[str, Any]]:
@@ -173,10 +218,11 @@ def main(argv: List[str] | None = None) -> int:
     )
     parser.add_argument(
         "--predictor",
-        choices=("stub", "real"),
+        choices=("stub", "real", "gemini"),
         default="stub",
-        help="qa mode only: stub lookup table (default) or a real model "
-        f"(needs {QA_API_KEY_ENV})",
+        help="qa mode only: stub lookup table (default), OpenAI model "
+        f"(real, needs {QA_API_KEY_ENV}), or Gemini model "
+        f"(gemini, needs {GEMINI_API_KEY_ENV})",
     )
     args = parser.parse_args(argv)
 
@@ -204,11 +250,20 @@ def main(argv: List[str] | None = None) -> int:
     else:
         if not args.dataset.exists():
             parser.error(f"dataset not found: {args.dataset}")
-        if args.predictor == "real":
-            if not os.environ.get(QA_API_KEY_ENV):
-                parser.error(f"--predictor real needs {QA_API_KEY_ENV} in the environment")
-            model_id = os.environ.get(QA_MODEL_ENV, DEFAULT_QA_MODEL)
-            predict: Callable[[str], str] = lambda text: real_llm_predict(
+        if args.predictor in ("real", "gemini"):
+            if args.predictor == "real":
+                key_env, default_model = QA_API_KEY_ENV, DEFAULT_QA_MODEL
+                factory = real_llm_predict
+            else:
+                key_env, default_model = GEMINI_API_KEY_ENV, DEFAULT_GEMINI_MODEL
+                factory = gemini_llm_predict
+            if not os.environ.get(key_env):
+                parser.error(
+                    f"--predictor {args.predictor} needs {key_env} "
+                    "in the environment"
+                )
+            model_id = os.environ.get(QA_MODEL_ENV, default_model)
+            predict: Callable[[str], str] = lambda text: factory(
                 text, model=model_id
             )
         else:

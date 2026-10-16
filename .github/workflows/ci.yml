@@ -18,7 +18,7 @@ jobs:
         run: |
           pip install "pytest>=8,<9" "numpy>=1.26" "scikit-learn>=1.4,<2"
           pip install torch --index-url https://download.pytorch.org/whl/cpu
-          pip install "sentence-transformers>=6,<7" "openai>=2,<3"
+          pip install "sentence-transformers>=6,<7" "openai>=2,<3" "google-genai>=1,<2"
 
       - name: Cache sentence-transformers model
         uses: actions/cache@v4
