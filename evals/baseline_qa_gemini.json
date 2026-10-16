@@ -1,0 +1,532 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "metric": "exact_match",
+  "exact_match": 0.14,
+  "matched": 7,
+  "total": 50,
+  "results": [
+    {
+      "input": "What is the capital of France?",
+      "expected": "Paris",
+      "actual": "Paris",
+      "match": true,
+      "usage": {
+        "prompt_tokens": 23,
+        "completion_tokens": 1
+      }
+    },
+    {
+      "input": "What is 2 + 2?",
+      "expected": "4",
+      "actual": "4",
+      "match": true,
+      "usage": {
+        "prompt_tokens": 24,
+        "completion_tokens": 1
+      }
+    },
+    {
+      "input": "What is the programming language that uses GIL?",
+      "expected": "Python",
+      "actual": "Python",
+      "match": true,
+      "usage": {
+        "prompt_tokens": 25,
+        "completion_tokens": 1
+      }
+    },
+    {
+      "input": "What company developed the Hermes Agent?",
+      "expected": "Nous Research",
+      "actual": "Nous Research",
+      "match": true,
+      "usage": {
+        "prompt_tokens": 23,
+        "completion_tokens": 2
+      }
+    },
+    {
+      "input": "In what year was the first version of Python released?",
+      "expected": "1991",
+      "actual": "1991",
+      "match": true,
+      "usage": {
+        "prompt_tokens": 27,
+        "completion_tokens": 4
+      }
+    },
+    {
+      "input": "What does SQL stand for?",
+      "expected": "Structured Query Language",
+      "actual": "Structured Query Language",
+      "match": true,
+      "usage": {
+        "prompt_tokens": 22,
+        "completion_tokens": 3
+      }
+    },
+    {
+      "input": "What is the primary function of a regression test?",
+      "expected": "To verify that recent changes haven't broken existing functionality.",
+      "actual": "To verify that recent code changes have not adversely affected existing functionality.",
+      "match": false,
+      "usage": {
+        "prompt_tokens": 26,
+        "completion_tokens": 13
+      }
+    },
+    {
+      "input": "Define latency in the context of web requests.",
+      "expected": "The time it takes for a request to travel from the client to the server and for the response to return.",
+      "actual": "The time it takes for a web request to travel from the client to the server and for the response to return.",
+      "match": false,
+      "usage": {
+        "prompt_tokens": 25,
+        "completion_tokens": 23
+      }
+    },
+    {
+      "input": "What is Big O notation used for?",
+      "expected": "Describing the limiting behavior of a function when the argument tends towards a particular value or infinity, often used to analyze algorithmic complexity.",
+      "actual": "Describing algorithmic complexity",
+      "match": false,
+      "usage": {
+        "prompt_tokens": 24,
+        "completion_tokens": 4
+      }
+    },
+    {
+      "input": "How does a closure work in JavaScript?",
+      "expected": "A closure is a function bundled together with references to its surrounding state (the lexical environment).",
+      "actual": "A closure is a function bundled together with references to its surrounding state (the lexical environment), allowing the inner function to access variables from an outer function even after the outer function has finished executing.",
+      "match": false,
+      "usage": {
+        "prompt_tokens": 24,
+        "completion_tokens": 38
+      }
+    },
+    {
+      "input": "What are the four pillars of OOP?",
+      "expected": "Encapsulation, abstraction, inheritance, and polymorphism.",
+      "actual": "Encapsulation, Abstraction, Inheritance, Polymorphism",
+      "match": false,
+      "usage": {
+        "prompt_tokens": 24,
+        "completion_tokens": 11
+      }
+    },
+    {
+      "input": "Explain the difference between a process and a thread.",
+      "expected": "A process is an independent execution unit with its own memory space, while a thread is a lightweight unit within a process sharing its memory.",
+      "actual": "A process is an independent execution unit with its own memory space, while a thread is the smallest unit of execution within a process that shares the process's memory.",
+      "match": false,
+      "usage": {
+        "prompt_tokens": 26,
+        "completion_tokens": 33
+      }
+    },
+    {
+      "input": "What is polymorphism?",
+      "expected": "The ability of different classes to respond to the same method call in their own specific way.",
+      "actual": "The ability of different types of data or objects to be processed through a single interface.",
+      "match": false,
+      "usage": {
+        "prompt_tokens": 20,
+        "completion_tokens": 17
+      }
+    },
+    {
+      "input": "Define abstraction.",
+      "expected": "The process of hiding complex implementation details and showing only the necessary features of an object.",
+      "actual": "The process of hiding complex implementation details and showing only the essential features of an object or system.",
+      "match": false,
+      "usage": {
+        "prompt_tokens": 19,
+        "completion_tokens": 19
+      }
+    },
+    {
+      "input": "What is a REST API?",
+      "expected": "Representational State Transfer API, an architectural style for providing standards between computer systems on the web.",
+      "actual": "An architectural style for designing networked applications using HTTP requests to access and use data.",
+      "match": false,
+      "usage": {
+        "prompt_tokens": 22,
+        "completion_tokens": 16
+      }
+    },
+    {
+      "input": "What is GraphQL?",
+      "expected": "A query language for APIs and a runtime for fulfilling those queries with your existing data.",
+      "actual": "An API query language and runtime",
+      "match": false,
+      "usage": {
+        "prompt_tokens": 20,
+        "completion_tokens": 6
+      }
+    },
+    {
+      "input": "How does garbage collection work?",
+      "expected": "It is a form of automatic memory management that identifies and frees memory no longer in use by the program.",
+      "actual": "Automatic memory management",
+      "match": false,
+      "usage": {
+        "prompt_tokens": 22,
+        "completion_tokens": 3
+      }
+    },
+    {
+      "input": "Define recursion.",
+      "expected": "A method of solving a problem where the solution depends on solutions to smaller instances of the same problem.",
+      "actual": "A programming or mathematical process where a function calls itself to solve a smaller instance of the same problem.",
+      "match": false,
+      "usage": {
+        "prompt_tokens": 19,
+        "completion_tokens": 20
+      }
+    },
+    {
+      "input": "What is the purpose of hashing?",
+      "expected": "To map data of arbitrary size to fixed-size values, typically for efficient data retrieval or security.",
+      "actual": "Data integrity and security",
+      "match": false,
+      "usage": {
+        "prompt_tokens": 23,
+        "completion_tokens": 4
+      }
+    },
+    {
+      "input": "Explain deadlock.",
+      "expected": "A situation where two or more processes are unable to proceed because each is waiting for the other to release a resource.",
+      "actual": "A situation where two or more processes are permanently blocked because each is waiting for a resource held by another.",
+      "match": false,
+      "usage": {
+        "prompt_tokens": 19,
+        "completion_tokens": 21
+      }
+    },
+    {
+      "input": "What is dependency injection?",
+      "expected": "A design pattern where an object receives other objects that it depends on, rather than creating them internally.",
+      "actual": "A design pattern where objects receive their dependencies from an external source rather than creating them internally.",
+      "match": false,
+      "usage": {
+        "prompt_tokens": 21,
+        "completion_tokens": 18
+      }
+    },
+    {
+      "input": "Define continuous integration.",
+      "expected": "The practice of merging all developers' working copies to a shared mainline several times a day.",
+      "actual": "A software development practice where developers frequently merge their code changes into a central repository, where automated builds and tests are then run.",
+      "match": false,
+      "usage": {
+        "prompt_tokens": 20,
+        "completion_tokens": 25
+      }
+    },
+    {
+      "input": "What is unit testing?",
+      "expected": "The process of testing the smallest testable parts of an application in isolation.",
+      "actual": "A software testing method where individual units or components of code are tested in isolation to ensure they work correctly.",
+      "match": false,
+      "usage": {
+        "prompt_tokens": 21,
+        "completion_tokens": 21
+      }
+    },
+    {
+      "input": "What is an asynchronous function in Python?",
+      "expected": "A function defined with `async def` that can be paused and resumed, allowing for concurrent execution using an event loop.",
+      "actual": "A function defined with `async def` that can be paused and resumed, allowing other code to run concurrently using the `await` keyword.",
+      "match": false,
+      "usage": {
+        "prompt_tokens": 24,
+        "completion_tokens": 28
+      }
+    },
+    {
+      "input": "What is memory leakage?",
+      "expected": "A situation where a program incorrectly manages memory allocations such that memory which is no longer needed is not released.",
+      "actual": "A failure in a program to release allocated memory that is no longer needed, leading to reduced performance or system crashes.",
+      "match": false,
+      "usage": {
+        "prompt_tokens": 21,
+        "completion_tokens": 23
+      }
+    },
+    {
+      "input": "Define blockchain.",
+      "expected": "A distributed, decentralized ledger that records transactions across many computers.",
+      "actual": "A decentralized, distributed digital ledger that securely records transactions across a network of computers.",
+      "match": false,
+      "usage": {
+        "prompt_tokens": 19,
+        "completion_tokens": 16
+      }
+    },
+    {
+      "input": "What is a microservice architecture?",
+      "expected": "An architectural style that structures an application as a collection of small, autonomous services modeled around a business domain.",
+      "actual": "An architectural style that structures an application as a collection of loosely coupled, independently deployable services.",
+      "match": false,
+      "usage": {
+        "prompt_tokens": 23,
+        "completion_tokens": 19
+      }
+    },
+    {
+      "input": "What is cloud computing?",
+      "expected": "The on-demand delivery of IT resources over the internet with pay-as-you-go pricing.",
+      "actual": "Delivering computing services\u2014including data storage, servers, databases, networking, and software\u2014over the internet.",
+      "match": false,
+      "usage": {
+        "prompt_tokens": 21,
+        "completion_tokens": 22
+      }
+    },
+    {
+      "input": "Explain containerization.",
+      "expected": "Packaging software code together with all its components like libraries, frameworks and other dependencies so that it can run uniformly and consistently on any infrastructure.",
+      "actual": "Packaging an application and its dependencies together into a single lightweight container to run reliably across different computing environments.",
+      "match": false,
+      "usage": {
+        "prompt_tokens": 20,
+        "completion_tokens": 20
+      }
+    },
+    {
+      "input": "What is artificial intelligence?",
+      "expected": "The simulation of human intelligence processes by computer systems.",
+      "actual": "The simulation of human intelligence by machines, enabling them to learn, reason, solve problems, and perform tasks autonomously.",
+      "match": false,
+      "usage": {
+        "prompt_tokens": 21,
+        "completion_tokens": 23
+      }
+    },
+    {
+      "input": "Define machine learning.",
+      "expected": "A subset of artificial intelligence that involves training algorithms to learn from and make predictions based on data.",
+      "actual": "A subset of artificial intelligence that enables systems to learn and improve from experience without being explicitly programmed.",
+      "match": false,
+      "usage": {
+        "prompt_tokens": 20,
+        "completion_tokens": 19
+      }
+    },
+    {
+      "input": "What is natural language processing?",
+      "expected": "A field of AI that gives machines the ability to read, understand, and derive meaning from human languages.",
+      "actual": "A branch of artificial intelligence that helps computers understand, interpret, and manipulate human language.",
+      "match": false,
+      "usage": {
+        "prompt_tokens": 22,
+        "completion_tokens": 17
+      }
+    },
+    {
+      "input": "What is an IDE?",
+      "expected": "An Integrated Development Environment, a software application that provides comprehensive facilities for software development.",
+      "actual": "Integrated Development Environment",
+      "match": false,
+      "usage": {
+        "prompt_tokens": 21,
+        "completion_tokens": 3
+      }
+    },
+    {
+      "input": "What is version control?",
+      "expected": "Systems that record changes to a file or set of files over time so that you can recall specific versions later.",
+      "actual": "A system that records changes to a file or set of files over time so that you can recall specific versions later.",
+      "match": false,
+      "usage": {
+        "prompt_tokens": 21,
+        "completion_tokens": 23
+      }
+    },
+    {
+      "input": "Explain the role of a compiler.",
+      "expected": "It translates source code written in a high-level programming language into machine code that a computer's processor can execute.",
+      "actual": "Translates human-readable source code into machine-executable code.",
+      "match": false,
+      "usage": {
+        "prompt_tokens": 23,
+        "completion_tokens": 13
+      }
+    },
+    {
+      "input": "What is a database?",
+      "expected": "An organized collection of structured information, or data, typically stored electronically in a computer system.",
+      "actual": "An organized collection of data or information stored electronically.",
+      "match": false,
+      "usage": {
+        "prompt_tokens": 21,
+        "completion_tokens": 10
+      }
+    },
+    {
+      "input": "What is SQL?",
+      "expected": "Structured Query Language, the standard language for managing and manipulating relational databases.",
+      "actual": "Structured Query Language",
+      "match": false,
+      "usage": {
+        "prompt_tokens": 20,
+        "completion_tokens": 3
+      }
+    },
+    {
+      "input": "What is NoSQL?",
+      "expected": "A category of database management systems that do not use the traditional relational table-based structure.",
+      "actual": "A non-relational database management system designed to store, retrieve, and manage unstructured or semi-structured data.",
+      "match": false,
+      "usage": {
+        "prompt_tokens": 21,
+        "completion_tokens": 23
+      }
+    },
+    {
+      "input": "Define a pointer.",
+      "expected": "A variable whose value is the memory address of another variable.",
+      "actual": "A variable that stores the memory address of another value.",
+      "match": false,
+      "usage": {
+        "prompt_tokens": 20,
+        "completion_tokens": 11
+      }
+    },
+    {
+      "input": "What is an algorithm?",
+      "expected": "A step-by-step procedure or formula for solving a problem.",
+      "actual": "A step-by-step set of instructions for solving a problem or completing a task.",
+      "match": false,
+      "usage": {
+        "prompt_tokens": 21,
+        "completion_tokens": 18
+      }
+    },
+    {
+      "input": "What is object-oriented programming?",
+      "expected": "A programming paradigm based on the concept of 'objects', which can contain data and code.",
+      "actual": "A programming paradigm based on the concept of \"objects,\" which contain data (attributes) and code (methods), used to design modular and reusable software.",
+      "match": false,
+      "usage": {
+        "prompt_tokens": 23,
+        "completion_tokens": 30
+      }
+    },
+    {
+      "input": "What is functional programming?",
+      "expected": "A programming paradigm where programs are constructed by applying and composing functions.",
+      "actual": "A programming paradigm that treats computation as the evaluation of mathematical functions and avoids changing state and mutable data.",
+      "match": false,
+      "usage": {
+        "prompt_tokens": 21,
+        "completion_tokens": 20
+      }
+    },
+    {
+      "input": "Explain the purpose of a firewall.",
+      "expected": "To monitor and control incoming and outgoing network traffic based on predetermined security rules.",
+      "actual": "Network security",
+      "match": false,
+      "usage": {
+        "prompt_tokens": 23,
+        "completion_tokens": 2
+      }
+    },
+    {
+      "input": "What is encryption?",
+      "expected": "The process of encoding information or messages in such a way that unauthorized parties cannot read it.",
+      "actual": "The process of converting data into a secure code to prevent unauthorized access.",
+      "match": false,
+      "usage": {
+        "prompt_tokens": 20,
+        "completion_tokens": 14
+      }
+    },
+    {
+      "input": "What is a cookie?",
+      "expected": "A small piece of data stored on the user's computer by the web browser while browsing a website.",
+      "actual": "A small piece of data stored on a user's computer by a web browser while browsing a website.",
+      "match": true,
+      "usage": {
+        "prompt_tokens": 21,
+        "completion_tokens": 21
+      }
+    },
+    {
+      "input": "What is a session?",
+      "expected": "A mechanism for maintaining state between a client and a server over a series of requests.",
+      "actual": "A temporary, interactive information exchange between a user and a computer system or application.",
+      "match": false,
+      "usage": {
+        "prompt_tokens": 21,
+        "completion_tokens": 16
+      }
+    },
+    {
+      "input": "Explain DNS.",
+      "expected": "Domain Name System, the hierarchical and decentralized naming system for computers, services, or other resources connected to the Internet.",
+      "actual": "The phonebook of the internet that translates human-readable domain names into machine-readable IP addresses.",
+      "match": false,
+      "usage": {
+        "prompt_tokens": 19,
+        "completion_tokens": 20
+      }
+    },
+    {
+      "input": "What is HTTPS?",
+      "expected": "Hypertext Transfer Protocol Secure, an extension of HTTP for secure communication over a computer network.",
+      "actual": "Hypertext Transfer Protocol Secure",
+      "match": false,
+      "usage": {
+        "prompt_tokens": 20,
+        "completion_tokens": 5
+      }
+    },
+    {
+      "input": "What is JSON?",
+      "expected": "JavaScript Object Notation, a lightweight format for storing and transporting data.",
+      "actual": "JavaScript Object Notation",
+      "match": false,
+      "usage": {
+        "prompt_tokens": 20,
+        "completion_tokens": 3
+      }
+    },
+    {
+      "input": "What is XML?",
+      "expected": "Extensible Markup Language, a markup language that defines a set of rules for encoding documents in a format that is both human-readable and machine-readable.",
+      "actual": "Extensible Markup Language",
+      "match": false,
+      "usage": {
+        "prompt_tokens": 20,
+        "completion_tokens": 4
+      }
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1086,
+    "completion_tokens": 730,
+    "api_calls": 50
+  },
+  "estimated_cost_usd": null,
+  "completed": true,
+  "stop_reason": null,
+  "run": {
+    "run_id": "faf7efa29f77",
+    "started_at": "2026-10-16T18:21:12.621138+00:00",
+    "finished_at": "2026-10-16T18:53:58.392485+00:00",
+    "git_sha": "bd55798",
+    "python": "3.14.6",
+    "mode": "qa",
+    "predictor": "gemini",
+    "model": "gemini-3.5-flash-lite",
+    "limit": null,
+    "max_calls": null,
+    "max_cost_usd": null,
+    "resumed": false,
+    "new_calls": 50
+  }
+}

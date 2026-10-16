@@ -11,7 +11,7 @@ python3 -m evals.runner                              # retrieval matrix -> evals
 python3 -m evals.runner --retrievers tfidf --headline tfidf:lexical   # single lane
 python3 -m evals.runner --mode qa                    # exact-match QA scoring (stub lookup)
 OPENAI_API_KEY=... python3 -m evals.runner --mode qa --predictor real  # OpenAI model (default gpt-4o-mini, override with QA_MODEL)
-GEMINI_API_KEY=... python3 -m evals.runner --mode qa --predictor gemini  # Gemini model (default gemini-2.5-flash, override with QA_MODEL)
+GEMINI_API_KEY=... python3 -m evals.runner --mode qa --predictor gemini  # Gemini model (default gemini-3.5-flash-lite, override with QA_MODEL)
 python3 -m evals.regression_gate evals/baseline_report.json evals/reports/latest.json --metric recall_at_10
 python3 -m evals.regression_gate evals/baseline_report.json evals/reports/latest.json --metric tfidf_semantic_recall_at_10
 ```
@@ -67,5 +67,5 @@ Hosted copy refreshes from `dashboard/data/` — after a new benchmark run, re-c
 - **Paraphrases are natural phrasing, not adversarial strings.** They were authored to read like a real user asking without content-word overlap with the answer, not tuned to force TF-IDF's number down. Whatever it measures is reported as-is.
 - **Dense 1.00 at recall@10 is a 50-doc ceiling effect.** With only 50 documents and one relevant doc, recall@10 can barely fail (random baseline ≈ 0.20). The recall@5 column is the more discriminating number (0.98 dense vs 0.70 TF-IDF).
 - **Bug the benchmark caught:** scikit-learn's default `token_pattern` drops single-character tokens, so the query `2 + 2` produced an empty vector and scored 0. Fixed via `TfidfRetriever.TOKEN_PATTERN` with a regression test in `tests/test_retriever.py`.
-- **QA mode's 0.10 is a stub, not a model.** `simulate_llm` is a fixed lookup table; every report from that mode is labelled `stub:not-a-real-model`. Pass `--predictor real` (OpenAI, needs `OPENAI_API_KEY`) or `--predictor gemini` (needs `GEMINI_API_KEY`) to score a real model instead; the report carries the model name. Both sides are SQuAD-normalized (lowercase, no punctuation/articles) before exact-match, so `paris.` counts — long-form answers still mostly miss, which is the honest harshness of exact-match on sentences. Note: Gemini free tier allows ~20 requests/day per model, so the 50-question set needs a quota reset (or billing) to complete in one run.
+- **A live model scored 0.14 — and it's mostly right.** `gemini-3.5-flash-lite` answered 7/50 exactly; the misses are semantically correct answers in different words ("recent code changes have not adversely affected..." vs "recent changes haven't broken..."). Exact-match measures string equality, not correctness — the 0.14 indicts the metric on long-form answers, not the model. Reference run committed at `evals/baseline_qa_gemini.json`. Short-answer QA or LLM-judged scoring would separate model quality from phrasing luck.
 - **Model is cached in CI** (`actions/cache` on `~/.cache/huggingface`); first cold run downloads `all-MiniLM-L6-v2` (~90 MB).
